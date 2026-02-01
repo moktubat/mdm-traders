@@ -10,10 +10,19 @@ import {
     Twitter,
 } from "lucide-react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const Footer = () => {
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
+const Footer: React.FC = () => {
     const footerRef = useRef<HTMLDivElement>(null);
     const columnRefs = useRef<HTMLDivElement[]>([]);
+
+    // Helper to set refs safely
+    const setColumnRef = (index: number) => (el: HTMLDivElement | null) => {
+        if (el) columnRefs.current[index] = el;
+    };
 
     /* Scroll reveal animation */
     useEffect(() => {
@@ -46,10 +55,7 @@ const Footer = () => {
                 {/* Top Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand */}
-                    <div
-                        ref={(el) => el && (columnRefs.current[0] = el)}
-                        className="space-y-6"
-                    >
+                    <div ref={setColumnRef(0)} className="space-y-6">
                         <div className="text-2xl font-bold flex items-center">
                             <span className="bg-blue-600 text-white p-1 rounded mr-2">
                                 MDM
@@ -77,9 +83,7 @@ const Footer = () => {
                     </div>
 
                     {/* Quick Links */}
-                    <div
-                        ref={(el) => el && (columnRefs.current[1] = el)}
-                    >
+                    <div ref={setColumnRef(1)}>
                         <h4 className="text-lg font-bold mb-6">Quick Links</h4>
                         <ul className="space-y-4 text-gray-400">
                             {[
@@ -105,9 +109,7 @@ const Footer = () => {
                     </div>
 
                     {/* Contact Info */}
-                    <div
-                        ref={(el) => el && (columnRefs.current[2] = el)}
-                    >
+                    <div ref={setColumnRef(2)}>
                         <h4 className="text-lg font-bold mb-6">Contact Info</h4>
                         <ul className="space-y-4 text-gray-400">
                             <li className="flex items-start space-x-3">
@@ -126,9 +128,7 @@ const Footer = () => {
                     </div>
 
                     {/* Newsletter */}
-                    <div
-                        ref={(el) => el && (columnRefs.current[3] = el)}
-                    >
+                    <div ref={setColumnRef(3)}>
                         <h4 className="text-lg font-bold mb-6">Newsletter</h4>
                         <p className="text-gray-400 mb-4">
                             Subscribe to get latest updates.

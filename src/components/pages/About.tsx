@@ -16,7 +16,7 @@ const About = () => {
     const badgeRef = useRef<HTMLDivElement>(null);
 
     const statYearsRef = useRef<HTMLSpanElement>(null);
-    const statPartnerRef = useRef<HTMLSpanElement>(null);
+    const statPartnerRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {

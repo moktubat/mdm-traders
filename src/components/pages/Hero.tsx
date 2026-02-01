@@ -119,7 +119,7 @@ export default function Hero() {
     };
 
     return (
-        <div className="relative w-full h-[500px] sm:h-[600px] lg:h-[850px] overflow-hidden">
+        <div className="relative w-full h-[600px] md:h-[850px] overflow-hidden">
             {/* SLIDES */}
             {slides.map((slide, i) => (
                 <div
@@ -148,7 +148,7 @@ export default function Hero() {
                             {slide.text.split(/<br\s*\/?>/i).map((t, j) => (
                                 <span
                                     key={j}
-                                    className="block text-4xl sm:text-5xl md:text-6xl
+                                    className="block text-3xl md:text-6xl
                    font-bold text-white mb-2
                    will-change-transform will-change-opacity"
                                 >
@@ -175,34 +175,60 @@ export default function Hero() {
             ))}
 
             {/* NAVIGATION */}
-            <button
-                onClick={prevSlide}
-                className="absolute left-6 top-1/2 -translate-y-1/2
+            <div className="hidden md:block">
+                <button
+                    onClick={prevSlide}
+                    className="absolute left-6 top-1/2 -translate-y-1/2
                            w-14 h-14 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white
                            hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
-            >
-                <ChevronLeft size={28} />
-            </button>
+                >
+                    <ChevronLeft size={28} />
+                </button>
 
-            <button
-                onClick={nextSlide}
-                className="absolute right-6 top-1/2 -translate-y-1/2
+                <button
+                    onClick={nextSlide}
+                    className="absolute right-6 top-1/2 -translate-y-1/2
                            w-14 h-14 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white
                            hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
-            >
-                <ChevronRight size={28} />
-            </button>
+                >
+                    <ChevronRight size={28} />
+                </button>
+            </div>
 
             {/* COUNTER */}
-            <div
-                ref={counterRef}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2
+            <div>
+                <div className="block md:hidden">
+                    <button
+                        onClick={prevSlide}
+                        className="absolute bottom-8 left-12 -translate-x-1/2
+                           p-3 rounded-full bg-white/20 backdrop-blur-md
+                           border border-white/30 text-white tracking-widest z-10 cursor-pointer"
+                    >
+                        <ChevronLeft size={28} />
+                    </button>
+                </div>
+
+                <div
+                    ref={counterRef}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2
                            px-8 py-3 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white tracking-widest z-10"
-            >
-                0{current + 1} / 0{slides.length}
+                >
+                    0{current + 1} / 0{slides.length}
+                </div>
+
+                <div className="block md:hidden">
+                    <button
+                        onClick={nextSlide}
+                        className="absolute bottom-8 -right-1 -translate-x-1/2
+                           p-3 rounded-full bg-white/20 backdrop-blur-md
+                           border border-white/30 text-white tracking-widest z-10 cursor-pointer"
+                    >
+                        <ChevronRight size={28} />
+                    </button>
+                </div>
             </div>
         </div>
     );
