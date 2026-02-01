@@ -155,7 +155,7 @@ const Projects = () => {
                             <button
                                 key={cat}
                                 onClick={() => setFilter(cat)}
-                                className={`px-6 py-2.5 rounded-full capitalize font-medium transition-all duration-300 ${filter === cat
+                                className={`font-nunito px-6 py-2.5 rounded-full capitalize font-medium transition-all duration-300 ${filter === cat
                                     ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105"
                                     : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
                                     }`}
@@ -192,7 +192,7 @@ const Projects = () => {
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 z-10">
                                     <span
-                                        className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide backdrop-blur-md ${project.category === "completed"
+                                        className={`font-nunito px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide backdrop-blur-md ${project.category === "completed"
                                             ? "bg-green-500/90 text-white"
                                             : "bg-yellow-500/90 text-white"
                                             }`}
@@ -204,15 +204,15 @@ const Projects = () => {
                                 {/* Gradient Overlay */}
                                 <div className="overlay-content absolute inset-0 bg-linear-to-t from-blue-900/90 to-transparent flex flex-col justify-end p-6 sm:p-8">
                                     {/* Title & Description */}
-                                    <h3 className="text-white text-xl sm:text-2xl font-bold mb-2 leading-tight">
+                                    <h3 className="font-grotesk text-white text-xl sm:text-2xl font-bold mb-2 leading-tight">
                                         {project.title}
                                     </h3>
-                                    <p className="text-blue-100 text-sm sm:text-base mb-4 line-clamp-2">
+                                    <p className="font-nunito text-blue-100 text-sm sm:text-base mb-4 line-clamp-2">
                                         {project.description}
                                     </p>
 
                                     {/* Project Details */}
-                                    <div className="space-y-2 text-sm">
+                                    <div className="font-nunito space-y-2 text-sm">
                                         <div className="flex items-center text-blue-200">
                                             <Calendar className="w-4 h-4 mr-2 shrink-0" />
                                             <span>Contract Date: {project.date}</span>
@@ -228,7 +228,7 @@ const Projects = () => {
                                     </div>
 
                                     {/* View Details Arrow */}
-                                    <div className="mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                                    <div className="font-nunito mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
                                         <span className="text-sm">View Details</span>
                                         <svg
                                             className="w-5 h-5 ml-2"

@@ -143,7 +143,7 @@ export default function Hero() {
                             ref={(el) => {
                                 if (el) textRefs.current[i] = el;
                             }}
-                            className="text-center"
+                            className="text-center font-grotesk"
                         >
                             {slide.text.split(/<br\s*\/?>/i).map((t, j) => (
                                 <span
@@ -163,7 +163,7 @@ export default function Hero() {
                                 ref={buttonRef}
                                 onMouseEnter={handleButtonEnter}
                                 onMouseLeave={handleButtonLeave}
-                                className="mt-10 px-10 py-4 bg-blue-600 hover:bg-blue-700 
+                                className="font-nunito mt-10 px-10 py-4 bg-blue-600 hover:bg-blue-700 
                                            text-white font-semibold rounded-md shadow-lg
                                            border border-blue-500/30 backdrop-blur-sm"
                             >
@@ -212,7 +212,7 @@ export default function Hero() {
 
                 <div
                     ref={counterRef}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2
+                    className="font-nunito absolute bottom-8 left-1/2 -translate-x-1/2
                            px-8 py-3 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white tracking-widest z-10"
                 >

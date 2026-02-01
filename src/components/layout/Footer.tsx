@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         <footer
             id="contact"
             ref={footerRef}
-            className="relative bg-gray-900 text-white pt-20 pb-10"
+            className="font-nunito relative bg-gray-900 text-white pt-20 pb-10"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Top Grid */}
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
                             </span>
                             <span>TRADERS</span>
                         </div>
-                        <p className="text-gray-400 leading-relaxed">
+                        <p className="font-grotesk text-gray-400 leading-relaxed">
                             Leading Two-Way Radio, high speed wireless and networking solutions
                             provider in Bangladesh since 2013.
                         </p>

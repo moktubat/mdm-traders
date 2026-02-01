@@ -76,7 +76,7 @@ const SectionHeading = ({ title, subtitle, center = true }: Props) => {
         >
             <h2
                 ref={titleRef}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-4"
+                className="font-grotesk text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-4"
             >
                 {title}
             </h2>
@@ -84,7 +84,7 @@ const SectionHeading = ({ title, subtitle, center = true }: Props) => {
             {subtitle && (
                 <p
                     ref={subtitleRef}
-                    className="text-gray-600 text-lg max-w-2xl mx-auto mb-6"
+                    className="font-nunito text-gray-600 text-lg max-w-2xl mx-auto mb-6"
                 >
                     {subtitle}
                 </p>

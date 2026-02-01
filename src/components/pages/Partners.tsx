@@ -98,10 +98,10 @@ const Partners = () => {
                         ref={contentRef}
                         className="max-w-3xl text-white space-y-6 md:space-y-8"
                     >
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+                        <h2 className="font-grotesk text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
                             {slides[currentSlide].title}
                         </h2>
-                        <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-100">
+                        <p className="font-nunito text-base sm:text-lg md:text-xl leading-relaxed text-gray-100">
                             {slides[currentSlide].description}
                         </p>
 

@@ -120,7 +120,7 @@ const Clients = () => {
                                         height={80}
                                         priority
                                     />
-                                    <span className="text-blue-900 font-semibold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">
+                                    <span className="font-nunito text-blue-900 font-bold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">
                                         {client.name}
                                     </span>
                                 </div>
@@ -149,7 +149,7 @@ const Clients = () => {
                                         height={80}
                                         priority
                                     />
-                                    <span className="text-blue-900 font-semibold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">
+                                    <span className="font-nunito text-blue-900 font-bold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">
                                         {client.name}
                                     </span>
                                 </div>

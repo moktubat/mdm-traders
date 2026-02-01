@@ -122,11 +122,11 @@ const About = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
                     {/* Text */}
                     <div ref={textRef}>
-                        <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">
+                        <h2 className="font-grotesk text-3xl md:text-4xl font-bold text-blue-900 mb-6">
                             Connecting people in the moments that matter
                         </h2>
 
-                        <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                        <p className="font-nunito text-gray-600 text-lg mb-8 leading-relaxed">
                             MDM Traders Limited is a technology service provider with expertise
                             in high speed wireless voice, data, and video solutions. Since
                             2013, we have been meeting the requirements of public safety,
@@ -137,27 +137,27 @@ const About = () => {
                         {/* Stats */}
                         <div className="grid grid-cols-2 gap-8 mb-10">
                             <div className="border-l-4 border-blue-600 pl-4">
-                                <h4 className="text-3xl font-bold text-blue-900">
+                                <h4 className="font-grotesk text-3xl font-bold text-blue-900">
                                     <span ref={statYearsRef}>0</span>+
                                 </h4>
-                                <p className="text-sm text-gray-500">Years Experience</p>
+                                <p className="font-nunito text-sm text-gray-500">Years Experience</p>
                             </div>
 
                             <div className="border-l-4 border-blue-600 pl-4">
                                 <h4
                                     ref={statPartnerRef}
-                                    className="text-3xl font-bold text-blue-900"
+                                    className="font-grotesk text-3xl font-bold text-blue-900"
                                 >
                                     Platinum
                                 </h4>
-                                <p className="text-sm text-gray-500">Motorola Partner</p>
+                                <p className="font-nunito text-sm text-gray-500">Motorola Partner</p>
                             </div>
                         </div>
 
                         {/* CTA */}
                         <Link
                             href="/about"
-                            className="inline-flex items-center gap-2
+                            className="font-nunito inline-flex items-center gap-2
               bg-blue-600 hover:bg-blue-700 text-white
               font-semibold px-7 py-3 rounded-full transition-colors"
                         >
@@ -185,8 +185,8 @@ const About = () => {
                             style={{ willChange: 'transform' }}
                             className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-8 rounded-2xl hidden md:block"
                         >
-                            <p className="text-2xl font-bold">Since 2013</p>
-                            <p className="text-sm opacity-80">Serving Bangladesh</p>
+                            <p className="font-grotesk text-2xl font-bold">Since 2013</p>
+                            <p className="font-nunito text-sm opacity-80">Serving Bangladesh</p>
                         </div>
                     </div>
                 </div>
