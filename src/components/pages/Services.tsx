@@ -10,19 +10,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
-        icon: <PencilRuler className="w-12 h-12 text-blue-600" />,
+        icon: <PencilRuler className="w-8 h-8 md:w-12 md:h-12 text-blue-600" />,
         title: "Tele-Communication System Planning & Design",
     },
     {
-        icon: <Wifi className="w-12 h-12 text-blue-600" />,
+        icon: <Wifi className="w-8 h-8 md:w-12 md:h-12 text-blue-600" />,
         title: "Supply, Installation & Commissioning of Two-way Radio System",
     },
     {
-        icon: <Settings className="w-12 h-12 text-blue-600" />,
+        icon: <Settings className="w-8 h-8 md:w-12 md:h-12 text-blue-600" />,
         title: "After Sale Service (Warranty, Repair & Maintenance)",
     },
     {
-        icon: <Lightbulb className="w-12 h-12 text-blue-600" />,
+        icon: <Lightbulb className="w-8 h-8 md:w-12 md:h-12 text-blue-600" />,
         title: "Training (Foreign or Local)",
     },
 ];
@@ -97,7 +97,7 @@ const Services = () => {
     };
 
     return (
-        <section ref={sectionRef} className="py-24 bg-gray-50">
+        <section ref={sectionRef} className="py-15 md:py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Heading */}
                 <div className="text-center mb-16">

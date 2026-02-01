@@ -90,7 +90,7 @@ const Clients = () => {
     }, []);
 
     return (
-        <section id="clients" className="py-24 bg-gray-50 overflow-hidden">
+        <section className="py-15 md:py-24 bg-gray-50 overflow-hidden">
             <div className="w-fill mx-auto">
                 {/* Heading */}
                 <div className="text-center mb-16">
