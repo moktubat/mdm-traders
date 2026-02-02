@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { Wifi, Settings, Lightbulb, PencilRuler } from "lucide-react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import SectionHeading from "../common/SectionHeading";
+import SectionHeading from "../../common/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import gsap from "gsap";
 
@@ -10,27 +11,41 @@ const DesktopNavLink = ({
     href,
     children,
     scrolled,
+    active,
 }: {
     href: string;
     children: React.ReactNode;
     scrolled: boolean;
+    active: boolean;
 }) => {
     const underlineRef = useRef<HTMLSpanElement>(null);
 
+    useEffect(() => {
+        if (active && underlineRef.current) {
+            gsap.set(underlineRef.current, { scaleX: 1 });
+        } else if (underlineRef.current) {
+            gsap.set(underlineRef.current, { scaleX: 0 });
+        }
+    }, [active]);
+
     const handleEnter = () => {
-        gsap.to(underlineRef.current, {
-            scaleX: 1,
-            duration: 0.35,
-            ease: "power3.out",
-        });
+        if (!active) {
+            gsap.to(underlineRef.current, {
+                scaleX: 1,
+                duration: 0.35,
+                ease: "power3.out",
+            });
+        }
     };
 
     const handleLeave = () => {
-        gsap.to(underlineRef.current, {
-            scaleX: 0,
-            duration: 0.25,
-            ease: "power3.in",
-        });
+        if (!active) {
+            gsap.to(underlineRef.current, {
+                scaleX: 0,
+                duration: 0.25,
+                ease: "power3.in",
+            });
+        }
     };
 
     return (
@@ -38,14 +53,17 @@ const DesktopNavLink = ({
             href={href}
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
-            className={`relative text-sm font-medium ${scrolled ? "text-gray-800" : "text-white"
-                }`}
+            className={`
+                relative text-sm font-medium transition-transform duration-200
+                hover:scale-110
+                ${scrolled ? "text-gray-800" : "text-white"}
+                ${active ? "font-bold" : ""}
+            `}
         >
             {children}
             <span
                 ref={underlineRef}
-                className="absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0
-                   bg-gradient-to-r from-blue-500 to-blue-700"
+                className="absolute left-1/2 -bottom-1 h-0.5 w-[140%] -translate-x-1/2 origin-center scale-x-0 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full"
             />
         </Link>
     );
@@ -59,13 +77,14 @@ const Navbar = () => {
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const mobileItemsRef = useRef<HTMLAnchorElement[]>([]);
 
+    const pathname = usePathname();
+
     const navLinks = [
-        { name: "About", href: "#about" },
-        { name: "Projects", href: "#projects" },
-        { name: "Products", href: "#products" },
-        { name: "Gallery", href: "#gallery" },
-        { name: "Clients", href: "#clients" },
-        { name: "Contact", href: "#contact" },
+        { name: "About", href: "/about" },
+        { name: "Projects", href: "/projects" },
+        { name: "Products", href: "/products" },
+        { name: "Gallery", href: "/gallery" },
+        { name: "Contact", href: "/contact" },
     ];
 
     /* Scroll detection */
@@ -112,8 +131,9 @@ const Navbar = () => {
                 duration: 0.3,
                 ease: "power3.in",
                 onComplete: () => {
-                    if (mobileMenuRef.current)
+                    if (mobileMenuRef.current) {
                         mobileMenuRef.current.style.display = "none";
+                    }
                 },
             });
         }
@@ -122,7 +142,7 @@ const Navbar = () => {
     return (
         <nav
             className={`font-nunito fixed top-0 w-full z-50 transition-all duration-300
-        ${scrolled
+            ${scrolled
                     ? "backdrop-blur-xl bg-white/70 shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2"
                     : "bg-transparent py-4"
                 }`}
@@ -149,6 +169,7 @@ const Navbar = () => {
                                 key={link.name}
                                 href={link.href}
                                 scrolled={scrolled}
+                                active={pathname === link.href}
                             >
                                 {link.name}
                             </DesktopNavLink>
@@ -170,7 +191,7 @@ const Navbar = () => {
             <div
                 ref={mobileMenuRef}
                 className="md:hidden hidden overflow-hidden
-                   backdrop-blur-xl bg-white/90 border-t"
+                backdrop-blur-xl bg-white/90 border-t"
             >
                 <div className="px-4 pt-4 pb-6 space-y-2">
                     {navLinks.map((link, i) => (
@@ -181,8 +202,9 @@ const Navbar = () => {
                                 if (el) mobileItemsRef.current[i] = el;
                             }}
                             onClick={() => setIsOpen(false)}
-                            className="block px-3 py-2 rounded-md text-base font-medium
-                         text-gray-800 hover:bg-blue-50 hover:text-blue-600"
+                            className={`block px-3 py-2 rounded-md text-base font-medium
+                            text-gray-800 hover:bg-blue-50 hover:text-blue-600
+                            ${pathname === link.href ? "bg-blue-50 text-blue-600 font-bold" : ""}`}
                         >
                             {link.name}
                         </Link>

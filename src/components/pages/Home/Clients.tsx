@@ -26,7 +26,7 @@ import clientImg19 from "@/assets/clients/clientImg19.png";
 import clientImg20 from "@/assets/clients/clientImg20.png";
 import clientImg21 from "@/assets/clients/clientImg21.png";
 import clientImg22 from "@/assets/clients/clientImg22.png";
-import SectionHeading from "../common/SectionHeading";
+import SectionHeading from "../../common/SectionHeading";
 
 const clients = [
     { name: "Bangladesh Police", img: clientImg01 },

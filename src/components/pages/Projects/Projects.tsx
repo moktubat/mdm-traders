@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Calendar, MapPin, Award } from "lucide-react";
-import SectionHeading from "../common/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,8 +11,8 @@ const projects = [
     {
         id: 1,
         title: "HSIA 3rd Terminal Expansion Project",
-        description: "Supply & installation of Radio system (Capacity Max - Single Site Trunk System)",
-        category: "completed",
+        description: "HSIA 3rd terminal expansion project - supply & installation of Radio system (Capacity Max - Single Site Trunk System)",
+        category: "in-progress",
         date: "27/07/2021",
         location: "Hazrat Shahjalal International Airport",
         client: "Civil Aviation Authority",
@@ -22,8 +21,8 @@ const projects = [
     {
         id: 2,
         title: "DMR Trunking System for Bangladesh Police",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) on turnkey basis",
-        category: "completed",
+        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) on turnkey basis for Bangladesh Police.",
+        category: "in-progress",
         date: "23/06/2021",
         location: "Nationwide Deployment",
         client: "Bangladesh Police",
@@ -42,33 +41,63 @@ const projects = [
     {
         id: 4,
         title: "UHF DMR Walkie Talkie System",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) system with necessary accessories",
-        category: "completed",
-        date: "25/06/2019",
+        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) system on turnkey basis for Bangladesh Police. (UHF DMR Walkie Talkie with necessary accessories).",
+        category: "in-progress",
+        date: "27/06/2021",
         location: "Multiple Locations",
         client: "Bangladesh Police",
         image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
     },
-    // {
-    //     id: 5,
-    //     title: "VHF DMR Radio System Implementation",
-    //     description: "Supply, installation, testing & commissioning of VHF DMR Radio system for Bangladesh Police",
-    //     category: "completed",
-    //     date: "25/06/2019",
-    //     location: "Nationwide",
-    //     client: "Bangladesh Police",
-    //     image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    // },
-    // {
-    //     id: 6,
-    //     title: "Radio Linking System",
-    //     description: "Supply, installation, testing & commissioning of radio linking system on turnkey basis",
-    //     category: "in-progress",
-    //     date: "25/06/2019",
-    //     location: "Bangladesh",
-    //     client: "Bangladesh Police",
-    //     image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    // },
+    {
+        id: 5,
+        title: "VHF DMR Radio System Implementation",
+        description: "Supply, installation, testing & commissioning of VHF DMR Radio system for Bangladesh Police.",
+        category: "completed",
+        date: "25/06/2019",
+        location: "Nationwide",
+        client: "Bangladesh Police",
+        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
+    },
+    {
+        id: 6,
+        title: "Radio Linking System",
+        description: "Supply, installation, testing & commissioning of radio linking system on turnkey basis for Bangladesh Police.",
+        category: "completed",
+        date: "27/06/2019",
+        location: "Bangladesh",
+        client: "Bangladesh Police",
+        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
+    },
+    {
+        id: 7,
+        title: "VHF & UHF DMR Radio System Implementation",
+        description: "Supply, installation, testing & commissioning of VHF & UHF DMR Radio system on turnkey basis for Bangladesh Police.",
+        category: "completed",
+        date: "26/04/2018",
+        location: "Bangladesh",
+        client: "Bangladesh Police",
+        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
+    },
+    {
+        id: 8,
+        title: "VHF DMR Radio System Deployment",
+        description: "Supply, installation, testing & commissioning of VHF DMR Radio system on turnkey basis for Bangladesh Police.",
+        category: "completed",
+        date: "25/06/2018",
+        location: "Bangladesh",
+        client: "Bangladesh Police",
+        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
+    },
+    {
+        id: 9,
+        title: "VHF DMR Radio System Installation",
+        description: "Supply and installation of VHF DMR Radio system for Bangladesh Police.",
+        category: "completed",
+        date: "13/06/2017",
+        location: "Bangladesh",
+        client: "Bangladesh Police",
+        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
+    },
 ];
 
 const Projects = () => {
@@ -142,13 +171,7 @@ const Projects = () => {
     return (
         <section className="py-15 md:py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Heading */}
                 <div className="text-center mb-12">
-                    <SectionHeading
-                        title="Our Projects"
-                        subtitle="Delivering excellence in communication infrastructure and technology solutions"
-                    />
-
                     {/* Filters */}
                     <div className="flex flex-wrap justify-center gap-3 mt-8">
                         {["all", "completed", "in-progress"].map((cat) => (
