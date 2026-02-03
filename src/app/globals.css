@@ -30,3 +30,53 @@ body {
 .font-nunito {
   font-family: var(--font-nunito), sans-serif;
 }
+
+/* Fade-in animation for subcategories */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Smooth scrolling for sticky sidebar */
+.sticky {
+  position: sticky;
+  top: 6rem; /* Adjust based on your header height */
+}
+
+/* Custom scrollbar for sidebar */
+aside::-webkit-scrollbar {
+  width: 6px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hover effect for product cards */
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+
+.group:hover .group-hover\:ring-2 {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}

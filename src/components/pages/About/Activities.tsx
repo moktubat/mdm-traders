@@ -14,77 +14,95 @@ const activities = [
 ];
 
 const Activities = () => {
-    const sectionRef = useRef(null);
-    const numberRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useEffect(() => {
-        numberRefs.current.forEach((el, index) => {
+        ScrollTrigger.refresh();
+
+        // Animate cards from bottom to top
+        const cards = cardsRef.current.filter(Boolean).reverse();
+
+        cards.forEach((el, i) => {
             if (!el) return;
 
             const heading = el.querySelector("h3");
             if (!heading) return;
 
-            const obj = { val: 0 };
+            const index = cardsRef.current.indexOf(el);
+            const counter = { val: 0 };
 
-            gsap.to(obj, {
-                val: activities[index].value,
-                duration: 2,
-                delay: index * 0.2,
-                ease: "power1.out",
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: el,
-                    start: "top 85%",
-                },
-                onUpdate: () => {
-                    let displayVal = Math.floor(obj.val).toLocaleString();
-
-                    if (activities[index].format === "M") {
-                        displayVal = Math.floor(obj.val / 1_000_000) + " M";
-                    } else if (activities[index].format === "+") {
-                        displayVal = Math.floor(obj.val) + "+";
-                    }
-
-                    heading.innerText = displayVal;
+                    start: "top 90%",
+                    once: true,
                 },
             });
 
-            gsap.from(el, {
-                opacity: 0,
-                y: 20,
-                duration: 0.8,
-                delay: index * 0.2,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
+            // Card entrance animation
+            tl.fromTo(
+                el,
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power3.out",
+                }
+            );
+
+            // Number count animation
+            tl.to(
+                counter,
+                {
+                    val: activities[index].value,
+                    duration: 1.8,
+                    ease: "power1.out",
+                    onUpdate: () => {
+                        let displayVal = Math.floor(counter.val).toLocaleString();
+
+                        if (activities[index].format === "M") {
+                            displayVal =
+                                Math.floor(counter.val / 1_000_000) + " M";
+                        } else if (activities[index].format === "+") {
+                            displayVal = Math.floor(counter.val) + "+";
+                        }
+
+                        heading.innerText = displayVal;
+                    },
                 },
-            });
+                "-=0.4" // overlap with entrance
+            );
         });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((t) => t.kill());
+        };
     }, []);
 
-
     return (
-        <section ref={sectionRef} className="py-24 bg-white">
+        <section className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
                     title="Activities"
                     subtitle="Our achievements in numbers"
                 />
 
-                {/* Activities Numbers */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                     {activities.map((item, index) => (
                         <div
                             key={index}
                             ref={(el) => {
-                                numberRefs.current[index] = el;
+                                cardsRef.current[index] = el;
                             }}
-                            className="font-grotesk bg-blue-50 p-10 rounded-2xl shadow-sm"
+                            className="font-grotesk bg-blue-50 p-10 rounded-2xl shadow-sm opacity-0"
                         >
                             <h3 className="text-4xl md:text-5xl font-bold text-blue-900 mb-2">
                                 0
                             </h3>
-                            <p className="font-nunito text-gray-600 text-lg">{item.label}</p>
+                            <p className="font-nunito text-gray-600 text-lg">
+                                {item.label}
+                            </p>
                         </div>
                     ))}
                 </div>
