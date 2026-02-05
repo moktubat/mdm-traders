@@ -1,83 +1,37 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Calendar, MapPin, Award } from "lucide-react";
 import SectionHeading from "../../common/SectionHeading";
+import { Project } from "@/types/project";
+import { urlFor } from "@/lib/sanity";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-    {
-        id: 1,
-        title: "HSIA 3rd Terminal Expansion Project",
-        description: "HSIA 3rd terminal expansion project - supply & installation of Radio system (Capacity Max - Single Site Trunk System)",
-        category: "in-progress",
-        date: "27/07/2021",
-        location: "Hazrat Shahjalal International Airport",
-        client: "Civil Aviation Authority",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 2,
-        title: "DMR Trunking System for Bangladesh Police",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) on turnkey basis for Bangladesh Police.",
-        category: "in-progress",
-        date: "23/06/2021",
-        location: "Nationwide Deployment",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 3,
-        title: "Tier III Data Centre Infrastructure",
-        description: "Procurement and installation of 1x Tier III Data Centre along with all accessories & infrastructure including construction of the complex",
-        category: "in-progress",
-        date: "24/06/2021",
-        location: "Dhaka",
-        client: "Government of Bangladesh",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 4,
-        title: "UHF DMR Walkie Talkie System",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) system on turnkey basis for Bangladesh Police. (UHF DMR Walkie Talkie with necessary accessories).",
-        category: "in-progress",
-        date: "27/06/2021",
-        location: "Multiple Locations",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 5,
-        title: "VHF DMR Radio System Implementation",
-        description: "Supply, installation, testing & commissioning of VHF DMR Radio system for Bangladesh Police.",
-        category: "completed",
-        date: "25/06/2019",
-        location: "Nationwide",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 6,
-        title: "Radio Linking System",
-        description: "Supply, installation, testing & commissioning of radio linking system on turnkey basis for Bangladesh Police.",
-        category: "completed",
-        date: "27/06/2019",
-        location: "Bangladesh",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    }
-];
+interface ProjectsProps {
+    projects: Project[];
+}
 
-const Projects = () => {
+const Projects = ({ projects }: ProjectsProps) => {
     const [filter, setFilter] = useState("all");
     const containerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
 
     const filteredProjects =
         filter === "all" ? projects : projects.filter((p) => p.category === filter);
+
+    // Format date from YYYY-MM-DD to DD/MM/YYYY
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -105,10 +59,10 @@ const Projects = () => {
     // Smooth hover effect with proper cleanup
     const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
-        const img = card.querySelector("img");
+        const imageWrapper = card.querySelector(".image-wrapper");
         const overlay = card.querySelector(".overlay-content");
 
-        gsap.to(img, {
+        gsap.to(imageWrapper, {
             scale: 1.08,
             duration: 0.6,
             ease: "power2.out",
@@ -123,10 +77,10 @@ const Projects = () => {
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
-        const img = card.querySelector("img");
+        const imageWrapper = card.querySelector(".image-wrapper");
         const overlay = card.querySelector(".overlay-content");
 
-        gsap.to(img, {
+        gsap.to(imageWrapper, {
             scale: 1,
             duration: 0.6,
             ease: "power2.out",
@@ -156,8 +110,8 @@ const Projects = () => {
                                 key={cat}
                                 onClick={() => setFilter(cat)}
                                 className={`font-nunito px-6 py-2.5 rounded-full capitalize font-medium transition-all duration-300 ${filter === cat
-                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105"
-                                    : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
+                                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105"
+                                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
                                     }`}
                             >
                                 {cat === "all" ? "All Projects" : cat.replace("-", " ")}
@@ -173,7 +127,7 @@ const Projects = () => {
                 >
                     {filteredProjects.map((project, index) => (
                         <div
-                            key={project.id}
+                            key={project._id}
                             ref={(el) => {
                                 if (el) cardsRef.current[index] = el;
                             }}
@@ -183,18 +137,22 @@ const Projects = () => {
                         >
                             {/* Image Container */}
                             <div className="relative h-96 md:h-[30rem] overflow-hidden">
-                                <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    className="w-full h-full object-cover"
-                                />
+                                <div className="image-wrapper w-full h-full">
+                                    <Image
+                                        src={urlFor(project.image).width(800).height(600).url()}
+                                        alt={project.image.alt || project.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                                    />
+                                </div>
 
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 z-10">
                                     <span
                                         className={`font-nunito px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide backdrop-blur-md ${project.category === "completed"
-                                            ? "bg-green-500/90 text-white"
-                                            : "bg-yellow-500/90 text-white"
+                                                ? "bg-green-500/90 text-white"
+                                                : "bg-yellow-500/90 text-white"
                                             }`}
                                     >
                                         {project.category === "completed" ? "Completed" : "In Progress"}
@@ -215,7 +173,7 @@ const Projects = () => {
                                     <div className="font-nunito space-y-2 text-sm">
                                         <div className="flex items-center text-blue-200">
                                             <Calendar className="w-4 h-4 mr-2 shrink-0" />
-                                            <span>Contract Date: {project.date}</span>
+                                            <span>Contract Date: {formatDate(project.contractDate)}</span>
                                         </div>
                                         <div className="flex items-center text-blue-200">
                                             <MapPin className="w-4 h-4 mr-2 shrink-0" />
@@ -249,6 +207,31 @@ const Projects = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* View All Projects Link */}
+                {projects.length >= 6 && (
+                    <div className="text-center mt-12">
+                        <Link
+                            href="/projects"
+                            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
+                        >
+                            <span>View All Projects</span>
+                            <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                />
+                            </svg>
+                        </Link>
+                    </div>
+                )}
             </div>
         </section>
     );

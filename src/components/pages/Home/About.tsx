@@ -122,11 +122,11 @@ const About = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
                     {/* Text */}
                     <div ref={textRef}>
-                        <h2 className="font-grotesk text-3xl md:text-4xl font-bold text-blue-900 mb-6">
+                        <h2 className="font-grotesk text-3xl md:text-4xl font-bold text-blue-900 mb-4 md:mb-6">
                             Connecting people in the moments that matter
                         </h2>
 
-                        <p className="font-nunito text-gray-600 text-lg mb-8 leading-relaxed">
+                        <p className="font-nunito text-gray-600 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
                             MDM Traders Limited is a technology service provider with expertise
                             in high speed wireless voice, data, and video solutions. Since
                             2013, we have been meeting the requirements of public safety,
@@ -135,7 +135,7 @@ const About = () => {
                         </p>
 
                         {/* Stats */}
-                        <div className="grid grid-cols-2 gap-8 mb-10">
+                        <div className="grid grid-cols-2 gap-8 mb-6 md:mb-10">
                             <div className="border-l-4 border-blue-600 pl-4">
                                 <h4 className="font-grotesk text-3xl font-bold text-blue-900">
                                     <span ref={statYearsRef}>0</span>+
@@ -157,9 +157,7 @@ const About = () => {
                         {/* CTA */}
                         <Link
                             href="/about"
-                            className="font-nunito inline-flex items-center gap-2
-              bg-blue-600 hover:bg-blue-700 text-white
-              font-semibold px-7 py-3 rounded-full transition-colors"
+                            className="font-nunito text-sm md:text-base inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 md:px-7 py-2 md:py-3 rounded-full transition-colors"
                         >
                             Learn More
                         </Link>

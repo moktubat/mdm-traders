@@ -119,7 +119,7 @@ export default function Hero() {
     };
 
     return (
-        <div className="relative w-full h-[600px] md:h-[850px] overflow-hidden">
+        <div className="relative w-full h-[560px] md:h-[850px] overflow-hidden">
             {/* SLIDES */}
             {slides.map((slide, i) => (
                 <div
@@ -148,7 +148,7 @@ export default function Hero() {
                             {slide.text.split(/<br\s*\/?>/i).map((t, j) => (
                                 <span
                                     key={j}
-                                    className="block text-3xl md:text-6xl
+                                    className="block text-4xl md:text-6xl
                    font-bold text-white mb-2
                    will-change-transform will-change-opacity"
                                 >
@@ -163,9 +163,9 @@ export default function Hero() {
                                 ref={buttonRef}
                                 onMouseEnter={handleButtonEnter}
                                 onMouseLeave={handleButtonLeave}
-                                className="font-nunito mt-10 px-10 py-4 bg-blue-600 hover:bg-blue-700 
+                                className="font-nunito mt-10 px-6 md:px-10 py-2 md:py-4 bg-blue-600 hover:bg-blue-700 
                                            text-white font-semibold rounded-md shadow-lg
-                                           border border-blue-500/30 backdrop-blur-sm"
+                                           border border-blue-500/30 backdrop-blur-sm text-sm md:text-base"
                             >
                                 Explore Our Products
                             </button>
@@ -203,7 +203,7 @@ export default function Hero() {
                     <button
                         onClick={prevSlide}
                         className="absolute bottom-8 left-12 -translate-x-1/2
-                           p-3 rounded-full bg-white/20 backdrop-blur-md
+                           p-2 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white tracking-widest z-10 cursor-pointer"
                     >
                         <ChevronLeft size={28} />
@@ -213,7 +213,7 @@ export default function Hero() {
                 <div
                     ref={counterRef}
                     className="font-nunito absolute bottom-8 left-1/2 -translate-x-1/2
-                           px-8 py-3 rounded-full bg-white/20 backdrop-blur-md
+                           px-6 py-2 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white tracking-widest z-10"
                 >
                     0{current + 1} / 0{slides.length}
@@ -223,7 +223,7 @@ export default function Hero() {
                     <button
                         onClick={nextSlide}
                         className="absolute bottom-8 -right-1 -translate-x-1/2
-                           p-3 rounded-full bg-white/20 backdrop-blur-md
+                           p-2 rounded-full bg-white/20 backdrop-blur-md
                            border border-white/30 text-white tracking-widest z-10 cursor-pointer"
                     >
                         <ChevronRight size={28} />

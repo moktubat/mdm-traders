@@ -147,7 +147,14 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                 </div>
 
                 {/* Full Description */}
-                <div className="font-nunito prose max-w-none mb-12">
+                <div className="font-nunito prose prose-lg max-w-none mb-12 
+                    [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-2 [&_h2]:text-gray-900
+                    [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-gray-900
+                    [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:mt-4 [&_h4]:mb-2 [&_h4]:text-gray-900
+                    [&_p]:mb-2 [&_p]:leading-relaxed [&_p]:text-gray-700
+                    [&_strong]:font-bold [&_strong]:text-gray-900
+                    [&_ul]:mb-4 [&_ul]:ml-6 [&_li]:mb-2
+                    [&_ol]:mb-4 [&_ol]:ml-6">
                     {product.fullDescription && <PortableText value={product.fullDescription} />}
                 </div>
 

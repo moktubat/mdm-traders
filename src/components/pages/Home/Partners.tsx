@@ -69,7 +69,7 @@ const Partners = () => {
     }, []);
 
     return (
-        <section className="relative py-24 overflow-hidden">
+        <section className="relative overflow-hidden">
             <div ref={containerRef} className="relative h-[600px] md:h-[700px]">
                 {/* Background images - crossfade */}
                 {slides.map((slide, index) => (

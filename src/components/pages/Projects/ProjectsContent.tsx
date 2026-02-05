@@ -1,112 +1,27 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { Project } from "@/types/project";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Calendar, MapPin, Award } from "lucide-react";
+import { urlFor } from "@/lib/sanity";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-    {
-        id: 1,
-        title: "HSIA 3rd Terminal Expansion Project",
-        description: "HSIA 3rd terminal expansion project - supply & installation of Radio system (Capacity Max - Single Site Trunk System)",
-        category: "in-progress",
-        date: "27/07/2021",
-        location: "Hazrat Shahjalal International Airport",
-        client: "Civil Aviation Authority",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 2,
-        title: "DMR Trunking System for Bangladesh Police",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) on turnkey basis for Bangladesh Police.",
-        category: "in-progress",
-        date: "23/06/2021",
-        location: "Nationwide Deployment",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 3,
-        title: "Tier III Data Centre Infrastructure",
-        description: "Procurement and installation of 1x Tier III Data Centre along with all accessories & infrastructure including construction of the complex",
-        category: "in-progress",
-        date: "24/06/2021",
-        location: "Dhaka",
-        client: "Government of Bangladesh",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 4,
-        title: "UHF DMR Walkie Talkie System",
-        description: "Supply, installation, testing & commissioning of DMR Trunking (Tier 3) system on turnkey basis for Bangladesh Police. (UHF DMR Walkie Talkie with necessary accessories).",
-        category: "in-progress",
-        date: "27/06/2021",
-        location: "Multiple Locations",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 5,
-        title: "VHF DMR Radio System Implementation",
-        description: "Supply, installation, testing & commissioning of VHF DMR Radio system for Bangladesh Police.",
-        category: "completed",
-        date: "25/06/2019",
-        location: "Nationwide",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 6,
-        title: "Radio Linking System",
-        description: "Supply, installation, testing & commissioning of radio linking system on turnkey basis for Bangladesh Police.",
-        category: "completed",
-        date: "27/06/2019",
-        location: "Bangladesh",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 7,
-        title: "VHF & UHF DMR Radio System Implementation",
-        description: "Supply, installation, testing & commissioning of VHF & UHF DMR Radio system on turnkey basis for Bangladesh Police.",
-        category: "completed",
-        date: "26/04/2018",
-        location: "Bangladesh",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 8,
-        title: "VHF DMR Radio System Deployment",
-        description: "Supply, installation, testing & commissioning of VHF DMR Radio system on turnkey basis for Bangladesh Police.",
-        category: "completed",
-        date: "25/06/2018",
-        location: "Bangladesh",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-        id: 9,
-        title: "VHF DMR Radio System Installation",
-        description: "Supply and installation of VHF DMR Radio system for Bangladesh Police.",
-        category: "completed",
-        date: "13/06/2017",
-        location: "Bangladesh",
-        client: "Bangladesh Police",
-        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=600",
-    },
-];
+interface ProjectsContentProps {
+    allProjects: Project[];
+}
 
-const Projects = () => {
+const ProjectsContent = ({ allProjects }: ProjectsContentProps) => {
     const [filter, setFilter] = useState("all");
     const containerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
 
-    const filteredProjects =
-        filter === "all" ? projects : projects.filter((p) => p.category === filter);
+    const filteredProjects = useMemo(() => {
+        if (filter === "all") return allProjects;
+        return allProjects.filter((p) => p.category === filter);
+    }, [filter, allProjects]);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -131,6 +46,15 @@ const Projects = () => {
         return () => ctx.revert();
     }, [filter]);
 
+    // Format date from YYYY-MM-DD to DD/MM/YYYY
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     // Smooth hover effect with proper cleanup
     const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
@@ -144,7 +68,8 @@ const Projects = () => {
         });
 
         gsap.to(overlay, {
-            background: "linear-gradient(to top, rgba(30, 58, 138, 0.95) 0%, rgba(30, 58, 138, 0.4) 100%)",
+            background:
+                "linear-gradient(to top, rgba(30, 58, 138, 0.95) 0%, rgba(30, 58, 138, 0.4) 100%)",
             duration: 0.4,
             ease: "power2.out",
         });
@@ -162,7 +87,8 @@ const Projects = () => {
         });
 
         gsap.to(overlay, {
-            background: "linear-gradient(to top, rgba(30, 58, 138, 0.9) 0%, transparent 100%)",
+            background:
+                "linear-gradient(to top, rgba(30, 58, 138, 0.9) 0%, transparent 100%)",
             duration: 0.4,
             ease: "power2.out",
         });
@@ -196,7 +122,7 @@ const Projects = () => {
                 >
                     {filteredProjects.map((project, index) => (
                         <div
-                            key={project.id}
+                            key={project._id}
                             ref={(el) => {
                                 if (el) cardsRef.current[index] = el;
                             }}
@@ -207,8 +133,8 @@ const Projects = () => {
                             {/* Image Container */}
                             <div className="relative h-96 md:h-[30rem] overflow-hidden">
                                 <img
-                                    src={project.image}
-                                    alt={project.title}
+                                    src={urlFor(project.image).width(800).height(600).url()}
+                                    alt={project.image.alt || project.title}
                                     className="w-full h-full object-cover"
                                 />
 
@@ -220,7 +146,9 @@ const Projects = () => {
                                             : "bg-yellow-500/90 text-white"
                                             }`}
                                     >
-                                        {project.category === "completed" ? "Completed" : "In Progress"}
+                                        {project.category === "completed"
+                                            ? "Completed"
+                                            : "In Progress"}
                                     </span>
                                 </div>
 
@@ -238,7 +166,7 @@ const Projects = () => {
                                     <div className="font-nunito space-y-2 text-sm">
                                         <div className="flex items-center text-blue-200">
                                             <Calendar className="w-4 h-4 mr-2 shrink-0" />
-                                            <span>Contract Date: {project.date}</span>
+                                            <span>Contract Date: {formatDate(project.contractDate)}</span>
                                         </div>
                                         <div className="flex items-center text-blue-200">
                                             <MapPin className="w-4 h-4 mr-2 shrink-0" />
@@ -272,9 +200,18 @@ const Projects = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* No Results */}
+                {filteredProjects.length === 0 && (
+                    <div className="text-center py-12">
+                        <p className="font-nunito text-gray-500 text-lg">
+                            No projects found in this category.
+                        </p>
+                    </div>
+                )}
             </div>
         </section>
     );
 };
 
-export default Projects;
+export default ProjectsContent;
