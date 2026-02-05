@@ -110,8 +110,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                                 key={cat}
                                 onClick={() => setFilter(cat)}
                                 className={`font-nunito px-6 py-2.5 rounded-full capitalize font-medium transition-all duration-300 ${filter === cat
-                                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105"
-                                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105"
+                                    : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
                                     }`}
                             >
                                 {cat === "all" ? "All Projects" : cat.replace("-", " ")}
@@ -151,8 +151,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                                 <div className="absolute top-4 right-4 z-10">
                                     <span
                                         className={`font-nunito px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide backdrop-blur-md ${project.category === "completed"
-                                                ? "bg-green-500/90 text-white"
-                                                : "bg-yellow-500/90 text-white"
+                                            ? "bg-green-500/90 text-white"
+                                            : "bg-yellow-500/90 text-white"
                                             }`}
                                     >
                                         {project.category === "completed" ? "Completed" : "In Progress"}
@@ -186,7 +186,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                                     </div>
 
                                     {/* View Details Arrow */}
-                                    <div className="font-nunito mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                                    {/* <div className="font-nunito mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
                                         <span className="text-sm">View Details</span>
                                         <svg
                                             className="w-5 h-5 ml-2"
@@ -201,7 +201,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                                                 d="M17 8l4 4m0 0l-4 4m4-4H3"
                                             />
                                         </svg>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

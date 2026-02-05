@@ -42,6 +42,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Teams = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [cardsPerView, setCardsPerView] = useState(3);
     const sectionRef = useRef<HTMLDivElement>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
     const arrowLeftRef = useRef<HTMLButtonElement>(null);
@@ -50,6 +51,23 @@ const Teams = () => {
 
     // Create infinite loop by duplicating cards
     const duplicatedTeam = [...team, ...team, ...team];
+
+    // Handle responsive cards per view
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setCardsPerView(1);
+            } else if (window.innerWidth < 1024) {
+                setCardsPerView(2);
+            } else {
+                setCardsPerView(3);
+            }
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const nextSlide = () => {
         if (isAnimating.current) return;
@@ -68,8 +86,8 @@ const Teams = () => {
         if (sliderRef.current) {
             const container = sliderRef.current.parentElement;
             const containerWidth = container?.offsetWidth || 0;
-            const gap = 24; // gap-6 = 24px
-            const cardWidth = (containerWidth - (gap * 2)) / 3;
+            const gap = cardsPerView === 1 ? 16 : 24; // Smaller gap on mobile
+            const cardWidth = (containerWidth - (gap * (cardsPerView - 1))) / cardsPerView;
             const moveDistance = (cardWidth + gap) * currentIndex;
 
             gsap.to(sliderRef.current, {
@@ -80,15 +98,12 @@ const Teams = () => {
                     isAnimating.current = false;
 
                     // Reset position for infinite loop
-                    // If at the end of the last set (cards 9-12)
                     if (currentIndex >= team.length * 2) {
                         gsap.set(sliderRef.current, {
                             x: `-${(cardWidth + gap) * team.length}px`,
                         });
                         setCurrentIndex(team.length);
-                    }
-                    // If at the beginning of the first set (cards 1-3)
-                    else if (currentIndex <= 0) {
+                    } else if (currentIndex <= 0) {
                         gsap.set(sliderRef.current, {
                             x: `-${(cardWidth + gap) * team.length}px`,
                         });
@@ -97,7 +112,7 @@ const Teams = () => {
                 }
             });
         }
-    }, [currentIndex]);
+    }, [currentIndex, cardsPerView]);
 
     // Scroll reveal animation
     useEffect(() => {
@@ -163,6 +178,13 @@ const Teams = () => {
         });
     };
 
+    // Calculate card width based on viewport
+    const getCardWidth = () => {
+        if (cardsPerView === 1) return '100%';
+        if (cardsPerView === 2) return 'calc((100% - 24px) / 2)';
+        return 'calc((100% - 48px) / 3)';
+    };
+
     return (
         <section ref={sectionRef} className="py-24 bg-gray-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,7 +197,7 @@ const Teams = () => {
                 </div>
 
                 {/* Slider Container */}
-                <div className="relative px-16">
+                <div className="relative px-8 md:px-16">
                     {/* Navigation Arrows */}
                     <button
                         ref={arrowLeftRef}
@@ -183,11 +205,11 @@ const Teams = () => {
                         onMouseEnter={() => handleArrowEnter(arrowLeftRef)}
                         onMouseLeave={() => handleArrowLeave(arrowLeftRef)}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10
-                                 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
+                                 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
                                  flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white
                                  transition-colors duration-300 border-2 border-blue-100"
                     >
-                        <ChevronLeft className="w-6 h-6 lg:w-7 lg:h-7" />
+                        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                     </button>
 
                     <button
@@ -196,30 +218,30 @@ const Teams = () => {
                         onMouseEnter={() => handleArrowEnter(arrowRightRef)}
                         onMouseLeave={() => handleArrowLeave(arrowRightRef)}
                         className="absolute right-0 top-1/2 -translate-y-1/2 z-10
-                                 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
+                                 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
                                  flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white
                                  transition-colors duration-300 border-2 border-blue-100"
                     >
-                        <ChevronRight className="w-6 h-6 lg:w-7 lg:h-7" />
+                        <ChevronRight className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                     </button>
 
                     {/* Slider Wrapper */}
                     <div className="overflow-hidden pb-12">
                         <div
                             ref={sliderRef}
-                            className="flex gap-6"
+                            className="flex gap-4 md:gap-6"
                         >
                             {duplicatedTeam.map((member, index) => (
                                 <div
                                     key={index}
                                     className="shrink-0"
                                     style={{
-                                        width: 'calc((100% - 50px) / 3)'
+                                        width: getCardWidth()
                                     }}
                                 >
                                     <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500">
                                         {/* Image Container */}
-                                        <div className="relative aspect-4/5 overflow-hidden">
+                                        <div className="relative aspect-[4/5] overflow-hidden">
                                             <Image
                                                 src={member.image}
                                                 alt={member.name}
@@ -228,10 +250,10 @@ const Teams = () => {
                                             />
 
                                             {/* Gradient Overlay */}
-                                            <div className="absolute inset-0 bg-linear-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
                                             {/* Hover Content */}
-                                            <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                            <div className="absolute inset-0 flex items-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                                 <div className="flex gap-3">
                                                     <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all duration-300">
                                                         <Linkedin className="w-5 h-5" />
@@ -244,11 +266,11 @@ const Teams = () => {
                                         </div>
 
                                         {/* Info Section */}
-                                        <div className="p-5 relative">
+                                        <div className="p-4 md:p-5 relative">
                                             {/* Decorative Element */}
-                                            <div className="absolute top-0 left-5 w-12 h-1 bg-linear-to-r from-blue-500 to-blue-700 -translate-y-1/2"></div>
+                                            <div className="absolute top-0 left-4 md:left-5 w-12 h-1 bg-gradient-to-r from-blue-500 to-blue-700 -translate-y-1/2"></div>
 
-                                            <h3 className="font-grotesk text-lg md:text-xl font-bold text-blue-900 mb-1 leading-tight">
+                                            <h3 className="font-grotesk text-base md:text-lg lg:text-xl font-bold text-blue-900 mb-1 leading-tight">
                                                 {member.name}
                                             </h3>
                                             <p className="font-nunito text-blue-600 font-semibold text-sm md:text-base mb-0.5">

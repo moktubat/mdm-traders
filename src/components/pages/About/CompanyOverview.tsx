@@ -59,18 +59,18 @@ const CompanyOverview = () => {
     return (
         <section ref={sectionRef} className="py-16 md:py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div ref={headerRef} className="mb-12">
-                    <h2 className="font-grotesk text-4xl font-bold text-blue-900 mb-8">
+                <div ref={headerRef} className="mb-6 md:mb-12">
+                    <h2 className="font-grotesk text-3xl md:text-4xl font-bold text-blue-900 mb-4 md:mb-8">
                         Helping our customers succeed and grow since 2013
                     </h2>
                 </div>
 
-                <div className="font-nunito grid grid-cols-1 md:grid-cols-2 gap-12 text-xl text-gray-600 leading-relaxed">
+                <div className="font-nunito grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 text-base md:text-lg text-gray-600 leading-relaxed">
                     <div ref={leftContentRef}>
-                        <p className="mb-6">
+                        <p className="mb-3 md:mb-6">
                             Founded in 2013, M.D.M Traders Limited is a registered private limited company, governed under the company act 1994 of Bangladesh.
                         </p>
-                        <p className="mb-6">
+                        <p className="mb-3 md:mb-6">
                             As an authorised dealers of multiple manufacturers and Bangladesh’s largest two-way radio system supplier, we provide our customers with one source for all communication needs. We help organizations and businesses to keep their workers safe and communicate better by offering them the right two-way radio and networking solutions at a competitive price.
                         </p>
                         <p>
@@ -79,10 +79,10 @@ const CompanyOverview = () => {
                     </div>
 
                     <div ref={rightContentRef}>
-                        <p className="mb-6">
+                        <p className="mb-3 md:mb-6">
                             To ensure quality service, we have highly  board and management team. Our board of directors have over 30 years of experience in the telecommunication field and all our sales consultants, engineers and technicians are all highly-trained and certified to work with the products we carry.
                         </p>
-                        <p className="mb-6">
+                        <p className="mb-3 md:mb-6">
                             Whatever your requirements are, we believe, we can help you with a range of turnkey solutions and with ever changing technology as we work hard to get to know you, to understand your needs and to understand how our products or services can help your business.
                         </p>
                         <p>If you would like to know more about us or to arrange a visit, please get in touch.</p>

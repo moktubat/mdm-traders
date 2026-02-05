@@ -179,7 +179,7 @@ const ProjectsContent = ({ allProjects }: ProjectsContentProps) => {
                                     </div>
 
                                     {/* View Details Arrow */}
-                                    <div className="font-nunito mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                                    {/* <div className="font-nunito mt-4 flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform duration-300">
                                         <span className="text-sm">View Details</span>
                                         <svg
                                             className="w-5 h-5 ml-2"
@@ -194,7 +194,7 @@ const ProjectsContent = ({ allProjects }: ProjectsContentProps) => {
                                                 d="M17 8l4 4m0 0l-4 4m4-4H3"
                                             />
                                         </svg>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
