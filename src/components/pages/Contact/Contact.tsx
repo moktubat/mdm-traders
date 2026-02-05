@@ -252,11 +252,11 @@ const Contact = () => {
                         </div>
                         <h3 className="font-grotesk text-2xl font-bold text-blue-500 mb-4">Email Us</h3>
                         <p className="font-nunito text-gray-700 leading-relaxed">
-                            delwar@mdmbd.net
+                            <a href="mailto:delwar@mdmbd.net">delwar@mdmbd.net</a>
                             <br />
-                            momen@mdmbd.net
+                            <a href="mailto:momen@mdmbd.net">momen@mdmbd.net</a>
                             <br />
-                            khalid@mdmbd.net
+                            <a href="mailto:khalid@mdmbd.net">khalid@mdmbd.net</a>
                         </p>
                     </div>
                 </div>

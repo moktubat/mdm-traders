@@ -88,9 +88,9 @@ const Footer: React.FC = () => {
                         <ul className="space-y-4 text-gray-400">
                             {[
                                 { label: "Home", href: "/" },
-                                { label: "About Us", href: "#about" },
-                                { label: "Projects", href: "#projects" },
-                                { label: "Products", href: "#products" },
+                                { label: "About Us", href: "/about" },
+                                { label: "Projects", href: "/projects" },
+                                { label: "Products", href: "/products" },
                             ].map((link) => (
                                 <li key={link.label}>
                                     <a
@@ -120,9 +120,13 @@ const Footer: React.FC = () => {
                                 <Phone className="text-blue-600 shrink-0" size={20} />
                                 <span>+880 193 244 8883</span>
                             </li>
-                            <li className="flex items-center space-x-3">
-                                <Mail className="text-blue-600 shrink-0" size={20} />
-                                <span>delwar@mdmbd.net</span>
+                            <li className="flex items-start space-x-3">
+                                <Mail className="text-blue-600 shrink-0 mt-1" size={20} />
+                                <div className="flex flex-col space-y-1">
+                                    <a href="mailto:delwar@mdmbd.net">delwar@mdmbd.net</a>
+                                    <a href="mailto:momen@mdmbd.net">momen@mdmbd.net</a>
+                                    <a href="mailto:khalid@mdmbd.net">khalid@mdmbd.net</a>
+                                </div>
                             </li>
                         </ul>
                     </div>
