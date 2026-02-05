@@ -2,7 +2,7 @@
 
 A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh's leading provider of two-way radio, wireless, and networking solutions.
 
-![MDM Traders](/Screenshot_7.png)
+![MDM Traders](https://mdm-traders.vercel.app/Screenshot_7.png)
 
 ## 🌟 Features
 
