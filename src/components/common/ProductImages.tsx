@@ -11,8 +11,11 @@ function getMainImage(product: Product) {
 }
 
 export default function ProductImages({ product }: { product: Product }) {
-    const [selectedImage, setSelectedImage] = useState(getMainImage(product))
+    const mainImageIndex = product.images.findIndex((img) => img.isMainImage)
+    const [selectedImageIndex, setSelectedImageIndex] = useState(mainImageIndex >= 0 ? mainImageIndex : 0)
     const [isZoomed, setIsZoomed] = useState(false)
+
+    const selectedImage = product.images[selectedImageIndex]
 
     return (
         <div className="space-y-4">
@@ -34,7 +37,7 @@ export default function ProductImages({ product }: { product: Product }) {
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L22 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            {product.images.indexOf(selectedImage) + 1} / {product.images.length}
+                            {selectedImageIndex + 1} / {product.images.length}
                         </span>
                     </div>
                 )}
@@ -59,15 +62,15 @@ export default function ProductImages({ product }: { product: Product }) {
             {product.images.length > 1 && (
                 <div className="grid grid-cols-5 gap-2">
                     {product.images.map((img, index) => {
-                        const isActive = selectedImage._key === img._key
+                        const isActive = selectedImageIndex === index
 
                         return (
                             <button
-                                key={img._key}
-                                onClick={() => setSelectedImage(img)}
+                                key={index}
+                                onClick={() => setSelectedImageIndex(index)}
                                 className={`relative rounded-lg overflow-hidden transition-all duration-200 ${isActive
-                                        ? 'ring-2 ring-blue-600'
-                                        : 'border border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                                    ? 'ring-2 ring-blue-600'
+                                    : 'border border-gray-200 hover:border-gray-300 hover:shadow-sm'
                                     }`}
                             >
                                 <Image
