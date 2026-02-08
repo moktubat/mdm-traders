@@ -11,6 +11,8 @@ interface ProductsItemsProps {
 const ProductsItems = ({ products }: ProductsItemsProps) => {
     const [sortBy, setSortBy] = useState<string>("default");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 9;
 
     // Sort products based on selected option using useMemo
     const sortedProducts = useMemo(() => {
@@ -30,6 +32,61 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
         });
     }, [products, sortBy]);
 
+    // Calculate pagination
+    const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    const currentProducts = sortedProducts.slice(startIndex, endIndex);
+
+    // Reset to page 1 when sorting changes
+    const handleSortChange = (value: string) => {
+        setSortBy(value);
+        setCurrentPage(1);
+    };
+
+    // Generate page numbers with ellipsis
+    const getPageNumbers = () => {
+        const pages: (number | string)[] = [];
+        const showEllipsisThreshold = 7;
+
+        if (totalPages <= showEllipsisThreshold) {
+            // Show all pages if total is small
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            // Always show first page
+            pages.push(1);
+
+            if (currentPage > 3) {
+                pages.push('...');
+            }
+
+            // Show pages around current page
+            const start = Math.max(2, currentPage - 1);
+            const end = Math.min(totalPages - 1, currentPage + 1);
+
+            for (let i = start; i <= end; i++) {
+                pages.push(i);
+            }
+
+            if (currentPage < totalPages - 2) {
+                pages.push('...');
+            }
+
+            // Always show last page
+            pages.push(totalPages);
+        }
+
+        return pages;
+    };
+
+    // Scroll to top when page changes
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div>
             {/* Modern Header with Controls */}
@@ -43,6 +100,11 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                         {sortedProducts.length !== products.length && (
                             <span className="text-sm text-gray-500">
                                 of {products.length} total
+                            </span>
+                        )}
+                        {sortedProducts.length > productsPerPage && (
+                            <span className="text-sm text-gray-500">
+                                • Showing {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)}
                             </span>
                         )}
                     </div>
@@ -102,14 +164,14 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                             <select
                                 id="sort"
                                 value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
+                                onChange={(e) => handleSortChange(e.target.value)}
                                 className="font-nunito appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
                             >
                                 <option value="default">Default sorting</option>
                                 <option value="name-asc">Name: A to Z</option>
                                 <option value="name-desc">Name: Z to A</option>
-                                <option value="date-new">Newest first</option>
-                                <option value="date-old">Oldest first</option>
+                                <option value="newest">Newest first</option>
+                                <option value="oldest">Oldest first</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                                 <svg
@@ -132,18 +194,90 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
             </div>
 
             {/* Products Grid/List */}
-            {sortedProducts.length > 0 ? (
-                <div
-                    className={
-                        viewMode === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                            : "space-y-4"
-                    }
-                >
-                    {sortedProducts.map((product) => (
-                        <ProductCard key={product._id} product={product} viewMode={viewMode} />
-                    ))}
-                </div>
+            {currentProducts.length > 0 ? (
+                <>
+                    <div
+                        className={
+                            viewMode === "grid"
+                                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                                : "space-y-4"
+                        }
+                    >
+                        {currentProducts.map((product) => (
+                            <ProductCard key={product._id} product={product} viewMode={viewMode} />
+                        ))}
+                    </div>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            {/* Page Info */}
+                            <div className="text-sm text-gray-600 font-nunito">
+                                Page <span className="font-semibold text-gray-900">{currentPage}</span> of{' '}
+                                <span className="font-semibold text-gray-900">{totalPages}</span>
+                            </div>
+
+                            {/* Pagination Controls */}
+                            <div className="flex items-center gap-2">
+                                {/* Previous Button */}
+                                <button
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className={`font-nunito px-4 py-2 rounded-lg border font-medium transition-all ${currentPage === 1
+                                        ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                                        : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                        </svg>
+                                        Previous
+                                    </span>
+                                </button>
+
+                                {/* Page Numbers */}
+                                <div className="hidden sm:flex items-center gap-1">
+                                    {getPageNumbers().map((page, index) => (
+                                        page === '...' ? (
+                                            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-400">
+                                                ...
+                                            </span>
+                                        ) : (
+                                            <button
+                                                key={page}
+                                                onClick={() => handlePageChange(page as number)}
+                                                className={`font-nunito min-w-[40px] px-3 py-2 rounded-lg font-medium transition-all ${currentPage === page
+                                                    ? 'bg-blue-600 text-white shadow-sm'
+                                                    : 'text-gray-700 hover:bg-gray-100'
+                                                    }`}
+                                            >
+                                                {page}
+                                            </button>
+                                        )
+                                    ))}
+                                </div>
+
+                                {/* Next Button */}
+                                <button
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className={`font-nunito px-4 py-2 rounded-lg border font-medium transition-all ${currentPage === totalPages
+                                        ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                                        : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-1">
+                                        Next
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </>
             ) : (
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12">
                     <div className="text-center max-w-md mx-auto">
