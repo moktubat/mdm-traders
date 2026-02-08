@@ -16,16 +16,16 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
     const sortedProducts = useMemo(() => {
         return [...products].sort((a, b) => {
             switch (sortBy) {
-                case "name-asc":
+                case 'name-asc':
                     return a.title.localeCompare(b.title);
-                case "name-desc":
+                case 'name-desc':
                     return b.title.localeCompare(a.title);
-                case "date-new":
+                case 'newest':
                     return new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime();
-                case "date-old":
+                case 'oldest':
                     return new Date(a._createdAt).getTime() - new Date(b._createdAt).getTime();
                 default:
-                    return a.sortOrder - b.sortOrder;
+                    return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
             }
         });
     }, [products, sortBy]);
