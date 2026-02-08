@@ -55,6 +55,7 @@ const ProductsContent = ({
                             selectedSubCategory={selectedSubCategory}
                             onCategoryChange={setSelectedCategory}
                             onSubCategoryChange={setSelectedSubCategory}
+                            allProducts={allProducts}
                         />
                     </div>
 

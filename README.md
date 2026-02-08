@@ -7,6 +7,7 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
 ## 🌟 Features
 
 ### Core Features
+
 - **Dynamic Product Catalog** - Browse Motorola Solutions & Cambium Networks products with advanced filtering
 - **Product Comparison** - Compare up to 4 products side-by-side with detailed specifications
 - **Project Showcase** - View completed and in-progress telecommunication projects
@@ -16,6 +17,7 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
 - **CMS Integration** - Content managed through Sanity CMS
 
 ### Pages
+
 - **Home** - Hero section, About, Services, Projects (last 6), Partners, Clients
 - **About** - Company history, Mission & Vision, Board of Directors, Activities
 - **Projects** - Filterable project gallery (All/Completed/In Progress)
@@ -28,6 +30,7 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
 ## 🚀 Tech Stack
 
 ### Frontend
+
 - **Framework:** Next.js 16.1.6 (App Router)
 - **Language:** TypeScript 5
 - **Styling:** Tailwind CSS 4
@@ -38,6 +41,7 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
 - **Image Carousel:** Swiper 12.1.0
 
 ### Backend/CMS
+
 - **CMS:** Sanity.io
 - **Client:** @sanity/client 7.14.1
 - **Image URLs:** @sanity/image-url 2.0.3
@@ -47,10 +51,12 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
   - Projects (with status tracking)
 
 ### Typography
+
 - **Headings:** Space Grotesk (Google Font)
 - **Body Text:** Nunito Sans (Google Font)
 
 ### Performance
+
 - **ISR:** Incremental Static Regeneration (60s revalidation)
 - **Image Optimization:** Next.js Image component
 - **Code Splitting:** Automatic with Next.js
@@ -59,19 +65,22 @@ A modern, high-performance Next.js website for MDM Traders Limited - Bangladesh'
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 - Sanity account and project
 
 ### Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/yourusername/mdm-traders.git
 cd mdm-traders
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
@@ -86,6 +95,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 ```
 
 4. **Run development server**
+
 ```bash
 npm run dev
 ```
@@ -93,6 +103,7 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 5. **Build for production**
+
 ```bash
 npm run build
 npm start
@@ -182,6 +193,7 @@ mdm-traders/
 ## 🎨 Key Features Explained
 
 ### Product Comparison
+
 - Add up to 4 products to compare
 - Persistent comparison list using Zustand with localStorage
 - Side-by-side feature comparison
@@ -190,11 +202,13 @@ mdm-traders/
 - Clear all functionality
 
 **Files:**
+
 - State management: `src/hooks/useCompare.ts`
 - Compare page: `src/app/products-compare/page.tsx`
 - Component: `src/components/pages/ProductsCompare/ProductsCompare.tsx`
 
 ### Category System
+
 - **Main Categories:** Motorola Solutions, Cambium Networks
 - **Sub-Categories:** APX Series, Talkabout, TETRA, MOTOTRBO
 - Dynamic routing: `/category/motorola-solutions/apx-series`
@@ -202,10 +216,12 @@ mdm-traders/
 - Breadcrumb navigation
 
 **Files:**
+
 - Dynamic routes: `src/app/category/[...slug]/page.tsx`
 - Sidebar: `src/components/pages/Products/ProductsSidebar.tsx`
 
 ### Project Filtering
+
 - Filter by status: All, Completed, In Progress
 - GSAP scroll animations for cards
 - Last 6 projects shown on homepage
@@ -213,6 +229,7 @@ mdm-traders/
 - Status badges with color coding
 
 **Files:**
+
 - Home component: `src/components/pages/Home/Projects.tsx`
 - Projects page: `src/app/projects/page.tsx`
 - Content component: `src/components/pages/Projects/ProjectsContent.tsx`
@@ -220,28 +237,31 @@ mdm-traders/
 ### Typography System
 
 **Google Fonts Configuration:**
+
 ```typescript
 // In your layout or CSS
-import { Space_Grotesk, Nunito_Sans } from 'next/font/google'
+import { Space_Grotesk, Nunito_Sans } from "next/font/google";
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-grotesk'
-})
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-grotesk",
+});
 
 const nunitoSans = Nunito_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-nunito'
-})
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-nunito",
+});
 ```
 
 **Usage in Tailwind:**
+
 - Headings: `font-grotesk`
 - Body text: `font-nunito`
 
 ### Performance Optimizations
+
 - **Image Optimization:** Next.js Image component with Sanity CDN
 - **ISR (Incremental Static Regeneration):** 60-second revalidation
 - **Code Splitting:** Automatic route-based splitting
@@ -257,19 +277,19 @@ const nunitoSans = Nunito_Sans({
 // tailwind.config.ts
 export default {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        grotesk: ['var(--font-grotesk)'],
-        nunito: ['var(--font-nunito)'],
+        grotesk: ["var(--font-grotesk)"],
+        nunito: ["var(--font-nunito)"],
       },
     },
   },
-}
+};
 ```
 
 ### Next.js Configuration
@@ -278,16 +298,17 @@ export default {
 // next.config.ts
 const nextConfig = {
   images: {
-    domains: ['cdn.sanity.io', 'images.unsplash.com'],
-    formats: ['image/avif', 'image/webp'],
+    domains: ["cdn.sanity.io", "images.unsplash.com"],
+    formats: ["image/avif", "image/webp"],
   },
   experimental: {
     reactCompiler: true,
   },
-}
+};
 ```
 
 ### GSAP Animations
+
 - **Scroll Triggers:** Animations triggered on scroll
 - **Hover Effects:** Smooth scale and gradient transitions
 - **Stagger Animations:** Sequential element animations
@@ -298,6 +319,7 @@ const nextConfig = {
 ### Sanity Schemas
 
 **Products:**
+
 - Categories: Motorola Solutions, Cambium Networks
 - Sub-categories with conditional visibility
 - Multiple images with main image selection
@@ -305,6 +327,7 @@ const nextConfig = {
 - Manual sort ordering
 
 **Projects:**
+
 - Status tracking (Completed/In Progress)
 - Contract date with formatted display
 - Client and location information
@@ -331,6 +354,7 @@ See `sanity/README.md` for complete backend documentation.
 ### Vercel (Recommended)
 
 1. **Push to GitHub**
+
 ```bash
 git add .
 git commit -m "Initial commit"
@@ -353,6 +377,7 @@ git push origin main
 ### Other Platforms (Netlify, Railway, etc.)
 
 **Build Settings:**
+
 - Build command: `npm run build`
 - Start command: `npm start`
 - Node version: 18+
@@ -406,14 +431,17 @@ SANITY_API_TOKEN=your_token_here
 ### Common Issues
 
 **Images not loading:**
+
 - Check Sanity project ID in `.env.local`
 - Verify image domains in `next.config.ts`
 
 **Comparison not persisting:**
+
 - Check browser localStorage
 - Clear cache and test again
 
 **Build failing:**
+
 - Delete `.next` folder: `rm -rf .next`
 - Delete `node_modules`: `rm -rf node_modules`
 - Reinstall: `npm install`
@@ -422,6 +450,7 @@ SANITY_API_TOKEN=your_token_here
 ## 📚 Dependencies
 
 ### Core Dependencies
+
 ```json
 {
   "next": "16.1.6",
@@ -432,6 +461,7 @@ SANITY_API_TOKEN=your_token_here
 ```
 
 ### Sanity/CMS
+
 ```json
 {
   "@sanity/client": "^7.14.1",
@@ -442,6 +472,7 @@ SANITY_API_TOKEN=your_token_here
 ```
 
 ### UI/Animations
+
 ```json
 {
   "gsap": "^3.14.2",
@@ -451,6 +482,7 @@ SANITY_API_TOKEN=your_token_here
 ```
 
 ### State/Forms
+
 ```json
 {
   "zustand": "^5.0.11",
@@ -476,6 +508,7 @@ SANITY_API_TOKEN=your_token_here
 5. Open a Pull Request
 
 ### Coding Standards
+
 - Use TypeScript for all new files
 - Follow existing component structure
 - Use Tailwind utility classes
@@ -506,6 +539,7 @@ This project is proprietary and confidential.
 ## 👥 Contact
 
 **MDM Traders Limited**
+
 - **Website:** [mdmtraders.net](https://mdmtraders.net)
 - **Email:** delwar@mdmtbd.net / momen@mdmtbd.net / khalid@mdmtbd.net
 - **Phone:** +880 193 244 8883

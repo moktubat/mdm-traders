@@ -75,7 +75,7 @@ export const productsQuery = groq`
     mainCategory,
     subCategory,
     images,
-    shortDescription,
+    cardDescription,
     sortOrder
   }
 `
@@ -105,6 +105,6 @@ export const relatedProductsQuery = groq`
     images,
     mainCategory,
     subCategory,
-    shortDescription
+    cardDescription
   }
 `

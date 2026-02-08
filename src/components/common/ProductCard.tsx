@@ -46,7 +46,7 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
                         href={`/products/${product.slug.current}`}
                         className="shrink-0"
                     >
-                        <div className="w-32 h-full bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                        <div className="w-32 h-32 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
                             <Image
                                 src={urlFor(thumbnailImage).width(200).height(200).url()}
                                 alt={thumbnailImage.alt || product.title}
@@ -61,18 +61,19 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <Link href={`/products/${product.slug.current}`}>
                             <span className="font-nunito inline-block px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-md mb-2">
-                                {product.subCategory && product.subCategory !== 'none'
-                                    ? product.subCategory.replace('-', ' ').toUpperCase()
-                                    : product.mainCategory.replace('-', ' ').toUpperCase()}
+                                {product.subCategory.toUpperCase()}
                             </span>
 
                             <h3 className="font-grotesk text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                                 {product.title}
                             </h3>
 
-                            <p className="font-nunito text-sm text-gray-600 line-clamp-2 mb-4">
-                                {product.shortDescription}
-                            </p>
+                            {/* Card Description - FULL display in list view */}
+                            {product.cardDescription && (
+                                <p className="font-nunito text-sm text-gray-600 mb-4 leading-relaxed">
+                                    {product.cardDescription}
+                                </p>
+                            )}
                         </Link>
 
                         {/* Compare Actions */}
@@ -118,8 +119,8 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
 
     // Grid view (default)
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group">
-            <Link href={`/products/${product.slug.current}`}>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col">
+            <Link href={`/products/${product.slug.current}`} className="flex-1 flex flex-col">
                 {/* Image Container */}
                 <div className="relative bg-gray-100 aspect-square overflow-hidden border-b border-gray-200">
                     <Image
@@ -133,28 +134,29 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
                     {/* Category Badge - Overlay */}
                     <div className="absolute top-3 left-3">
                         <span className="font-nunito inline-block px-2.5 py-1 bg-white/95 backdrop-blur-sm text-blue-700 text-xs font-semibold rounded-md shadow-sm">
-                            {product.subCategory && product.subCategory !== 'none'
-                                ? product.subCategory.replace('-', ' ').toUpperCase()
-                                : product.mainCategory.replace('-', ' ').toUpperCase()}
+                            {product.subCategory.toUpperCase()}
                         </span>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-5 bg-white">
-                    <h3 className="font-grotesk font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-12">
+                <div className="p-5 bg-white flex-1 flex flex-col">
+                    <h3 className="font-grotesk text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-3 line-clamp-2 min-h-[3rem]">
                         {product.title}
                     </h3>
 
-                    <p className="font-nunito text-sm text-gray-600 line-clamp-2 min-h-10">
-                        {product.shortDescription}
-                    </p>
+                    {/* Card Description - Show with line clamp in grid */}
+                    {product.cardDescription && (
+                        <p className="font-nunito text-sm text-gray-600 leading-relaxed line-clamp-3 flex-1">
+                            {product.cardDescription}
+                        </p>
+                    )}
                 </div>
             </Link>
 
             {/* Compare Actions Footer */}
-            <div className="px-5 pb-5">
-                <div className="flex items-center gap-2">
+            <div className="px-5 pb-5 mt-auto">
+                <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
                     <input
                         type="checkbox"
                         checked={isChecked}

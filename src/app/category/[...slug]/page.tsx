@@ -14,34 +14,32 @@ interface PageProps {
 // Helper to get category display name
 function getCategoryDisplayName(slug: string): string {
     const categoryNames: Record<string, string> = {
-        "motorola-solutions": "Motorola Solutions",
-        "cambium-networks": "Cambium Networks",
-        "apx-series": "APX Series",
-        "talkabout": "Talkabout",
-        "tetra": "TETRA",
+        "portable-radio": "Portable Radio",
+        "mobile-radio": "Mobile Radio",
+        "apx": "APX",
         "mototrbo": "MOTOTRBO",
+        "tetra": "TETRA",
     };
     return categoryNames[slug] || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// Validate if category exists
-function isValidCategory(slug: string): boolean {
-    const validCategories = [
-        "motorola-solutions",
-        "cambium-networks",
-        "apx-series",
-        "talkabout",
-        "tetra",
-        "mototrbo",
-    ];
+// Validate if main category exists
+function isValidMainCategory(slug: string): boolean {
+    const validCategories = ["portable-radio", "mobile-radio"];
     return validCategories.includes(slug);
+}
+
+// Validate if subcategory exists
+function isValidSubCategory(slug: string): boolean {
+    const validSubCategories = ["apx", "mototrbo", "tetra"];
+    return validSubCategories.includes(slug);
 }
 
 // Validate category and subcategory relationship
 function isValidCategorySubcategory(category: string, subcategory: string): boolean {
     const validPairs: Record<string, string[]> = {
-        "motorola-solutions": ["apx-series", "talkabout", "tetra", "mototrbo"],
-        "cambium-networks": [],
+        "portable-radio": ["apx", "mototrbo", "tetra"],
+        "mobile-radio": ["apx", "mototrbo", "tetra"],
     };
 
     return validPairs[category]?.includes(subcategory) || false;
@@ -61,8 +59,8 @@ export default async function CategoryPage({ params }: PageProps) {
     const { slug } = await params;
 
     // Handle different URL patterns
-    // /category/motorola-solutions -> slug = ["motorola-solutions"]
-    // /category/motorola-solutions/talkabout -> slug = ["motorola-solutions", "talkabout"]
+    // /category/portable-radio -> slug = ["portable-radio"]
+    // /category/portable-radio/apx -> slug = ["portable-radio", "apx"]
 
     if (!slug || slug.length === 0 || slug.length > 2) {
         notFound();
@@ -74,25 +72,17 @@ export default async function CategoryPage({ params }: PageProps) {
     let initialSubCategory: string | null = null;
 
     if (slug.length === 1) {
-        // Single category: /category/motorola-solutions
+        // Single category: /category/portable-radio
         const category = slug[0];
 
-        if (!isValidCategory(category)) {
+        if (!isValidMainCategory(category)) {
             notFound();
         }
 
-        const isMainCategory = ["motorola-solutions", "cambium-networks"].includes(category);
-
-        if (isMainCategory) {
-            initialCategory = category;
-        } else {
-            // It's a subcategory being accessed directly
-            initialSubCategory = category;
-        }
-
+        initialCategory = category;
         pageTitle = getCategoryDisplayName(category);
     } else if (slug.length === 2) {
-        // Category + Subcategory: /category/motorola-solutions/talkabout
+        // Category + Subcategory: /category/portable-radio/apx
         const [category, subcategory] = slug;
 
         if (!isValidCategorySubcategory(category, subcategory)) {
