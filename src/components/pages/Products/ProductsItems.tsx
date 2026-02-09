@@ -2,7 +2,7 @@
 
 import { Product } from "@/types/product";
 import ProductCard from "@/components/common/ProductCard";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface ProductsItemsProps {
     products: Product[];
@@ -12,7 +12,29 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
     const [sortBy, setSortBy] = useState<string>("default");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 9;
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect screen size
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024); // lg breakpoint
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Calculate products per page based on view mode and device
+    const getProductsPerPage = () => {
+        if (viewMode === "list") {
+            return 9; // Always 9 for list view (both mobile and desktop)
+        }
+        // Grid view: 10 on mobile, 9 on desktop
+        return isMobile ? 10 : 9;
+    };
+
+    const productsPerPage = getProductsPerPage();
 
     // Sort products based on selected option using useMemo
     const sortedProducts = useMemo(() => {
@@ -38,11 +60,24 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
     const endIndex = startIndex + productsPerPage;
     const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
-    // Reset to page 1 when sorting changes
+    // Reset to page 1 when sorting or view mode changes
     const handleSortChange = (value: string) => {
         setSortBy(value);
         setCurrentPage(1);
     };
+
+    const handleViewModeChange = (mode: "grid" | "list") => {
+        if (isMobile && mode === "list") return;
+        setViewMode(mode);
+        setCurrentPage(1);
+    };
+
+    // Reset pagination when screen size changes (affects productsPerPage)
+    useEffect(() => {
+        if (viewMode === "grid") {
+            setCurrentPage(1);
+        }
+    }, [isMobile, viewMode]);
 
     // Generate page numbers with ellipsis
     const getPageNumbers = () => {
@@ -114,7 +149,7 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                         {/* View Mode Toggle */}
                         <div className="flex items-center bg-gray-100 rounded-lg p-1">
                             <button
-                                onClick={() => setViewMode("grid")}
+                                onClick={() => handleViewModeChange("grid")}
                                 className={`p-2 rounded-md transition-all duration-200 ${viewMode === "grid"
                                     ? "bg-white text-blue-600 shadow-sm"
                                     : "text-gray-500 hover:text-gray-700"
@@ -135,28 +170,31 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                                     />
                                 </svg>
                             </button>
-                            <button
-                                onClick={() => setViewMode("list")}
-                                className={`p-2 rounded-md transition-all duration-200 ${viewMode === "list"
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-gray-500 hover:text-gray-700"
-                                    }`}
-                                title="List view"
-                            >
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                            {!isMobile && (
+                                <button
+                                    onClick={() => handleViewModeChange("list")}
+                                    className={`p-2 rounded-md transition-all duration-200 ${viewMode === "list"
+                                        ? "bg-white text-blue-600 shadow-sm"
+                                        : "text-gray-500 hover:text-gray-700"
+                                        }`}
+                                    title="List view"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                </svg>
-                            </button>
+                                    <svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 6h16M4 12h16M4 18h16"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+
                         </div>
 
                         {/* Sort Dropdown */}
@@ -199,7 +237,7 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                     <div
                         className={
                             viewMode === "grid"
-                                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                                ? "grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
                                 : "space-y-4"
                         }
                     >
@@ -223,7 +261,7 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                                 <button
                                     onClick={() => handlePageChange(currentPage - 1)}
                                     disabled={currentPage === 1}
-                                    className={`font-nunito px-4 py-2 rounded-lg border font-medium transition-all ${currentPage === 1
+                                    className={`font-nunito px-3 sm:px-4 py-2 rounded-lg border font-medium transition-all text-sm ${currentPage === 1
                                         ? 'border-gray-200 text-gray-400 cursor-not-allowed'
                                         : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
                                         }`}
@@ -232,7 +270,8 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                         </svg>
-                                        Previous
+                                        <span className="hidden sm:inline">Previous</span>
+                                        <span className="sm:hidden">Prev</span>
                                     </span>
                                 </button>
 
@@ -258,17 +297,22 @@ const ProductsItems = ({ products }: ProductsItemsProps) => {
                                     ))}
                                 </div>
 
+                                {/* Mobile Page Indicator */}
+                                <div className="sm:hidden px-3 py-2 text-sm font-medium text-gray-700">
+                                    {currentPage} / {totalPages}
+                                </div>
+
                                 {/* Next Button */}
                                 <button
                                     onClick={() => handlePageChange(currentPage + 1)}
                                     disabled={currentPage === totalPages}
-                                    className={`font-nunito px-4 py-2 rounded-lg border font-medium transition-all ${currentPage === totalPages
+                                    className={`font-nunito px-3 sm:px-4 py-2 rounded-lg border font-medium transition-all text-sm ${currentPage === totalPages
                                         ? 'border-gray-200 text-gray-400 cursor-not-allowed'
                                         : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
                                         }`}
                                 >
                                     <span className="flex items-center gap-1">
-                                        Next
+                                        <span className="hidden sm:inline">Next</span>
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                         </svg>

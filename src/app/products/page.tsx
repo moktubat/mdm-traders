@@ -3,8 +3,29 @@ import { productsQuery } from "@/lib/queries";
 import { Product } from "@/types/product";
 import PageHeader from "@/components/common/PageHeader";
 import ProductsContent from "@/components/pages/Products/ProductsContent";
+import type { Metadata } from "next";
 
 export const revalidate = 60; // Revalidate every 60 seconds
+
+export const metadata: Metadata = {
+    title: "Products",
+    description: "Browse our comprehensive range of two-way radios, portable radios, and mobile radio communication systems. Featuring APX, MOTOTRBO, and TETRA solutions from leading manufacturers.",
+    keywords: [
+        "two-way radios",
+        "portable radio",
+        "mobile radio",
+        "APX radio",
+        "MOTOTRBO",
+        "TETRA radio",
+        "radio communication",
+        "DMR radio"
+    ],
+    openGraph: {
+        title: "Products | MDM Traders Limited",
+        description: "Explore professional radio communication products including portable and mobile radios for mission-critical operations.",
+        images: ["/favicon.png"],
+    },
+};
 
 async function getProducts(): Promise<Product[]> {
     try {

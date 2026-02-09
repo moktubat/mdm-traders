@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "MDM Traders Limited is Bangladesh’s leading two-way radio and telecommunication system supplier, providing DMR trunking, mission-critical communication, and turnkey networking solutions for government, defense, and private sectors since 2013.",
+    "MDM Traders Limited is Bangladesh's leading two-way radio and telecommunication system supplier, providing DMR trunking, mission-critical communication, and turnkey networking solutions for government, defense, and private sectors since 2013.",
 
   keywords: [
     "MDM Traders Limited",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MDM Traders Limited | Communication & Radio System Experts",
     description:
-      "Bangladesh’s trusted supplier of two-way radio, DMR trunking, and mission-critical telecom systems.",
+      "Bangladesh's trusted supplier of two-way radio, DMR trunking, and mission-critical telecom systems.",
     images: ["/favicon.png"],
   },
 
@@ -95,5 +95,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
