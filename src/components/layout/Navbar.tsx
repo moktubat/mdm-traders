@@ -35,8 +35,6 @@ const DesktopNavLink = ({
     const handleEnter = () => {
         if (!underlineRef.current || active) return;
 
-        gsap.killTweensOf(underlineRef.current);
-
         gsap.to(underlineRef.current, {
             scaleX: 1,
             duration: 0.35,
@@ -46,8 +44,6 @@ const DesktopNavLink = ({
 
     const handleLeave = () => {
         if (!underlineRef.current || active) return;
-
-        gsap.killTweensOf(underlineRef.current);
 
         gsap.to(underlineRef.current, {
             scaleX: 0,
@@ -71,15 +67,15 @@ const DesktopNavLink = ({
             {children}
             <span
                 ref={underlineRef}
-                className="
-                    absolute left-1/2 -bottom-1
-                    h-0.5 w-[130%]
-                    -translate-x-1/2
-                    scale-x-0
-                    bg-linear-to-r from-blue-500 to-blue-700
-                    rounded-full
-                    will-change-transform
-                "
+                className={`
+    absolute left-1/2 -bottom-1
+    h-0.5 w-[130%]
+    -translate-x-1/2
+    bg-linear-to-r from-blue-500 to-blue-700
+    rounded-full
+    will-change-transform
+    ${active ? "scale-x-100" : "scale-x-0"}
+  `}
             />
         </Link>
     );
@@ -240,8 +236,8 @@ const Navbar = () => {
                                 }}
                                 onClick={() => setIsOpen(false)}
                                 className={`block px-3 py-2 rounded-md text-base font-medium ${isActive
-                                        ? "bg-blue-50 text-blue-600 font-bold"
-                                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600"
+                                    ? "bg-blue-50 text-blue-600 font-bold"
+                                    : "text-gray-800 hover:bg-blue-50 hover:text-blue-600"
                                     }`}
                             >
                                 {link.name}

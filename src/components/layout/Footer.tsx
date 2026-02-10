@@ -73,8 +73,7 @@ const Footer: React.FC = () => {
                                 <a
                                     key={i}
                                     href="#"
-                                    className="p-2 bg-gray-800 rounded-full transition-all
-                             hover:bg-blue-600 hover:-translate-y-1"
+                                    className="p-2 bg-gray-800 rounded-full transition-all hover:bg-blue-600 hover:scale-110"
                                 >
                                     <Icon size={20} />
                                 </a>
@@ -95,11 +94,7 @@ const Footer: React.FC = () => {
                                 <li key={link.label}>
                                     <a
                                         href={link.href}
-                                        className="relative inline-block hover:text-white transition-colors
-                               after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-                               after:w-full after:scale-x-0 after:origin-left
-                               after:bg-blue-500 after:transition-transform
-                               hover:after:scale-x-100"
+                                        className="relative inline-block hover:text-white transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-500 after:transition-all hover:after:w-full"
                                     >
                                         {link.label}
                                     </a>
@@ -141,13 +136,11 @@ const Footer: React.FC = () => {
                             <input
                                 type="email"
                                 placeholder="Email address"
-                                className="bg-gray-800 text-white px-4 py-2 rounded-l-lg
-                           focus:outline-none w-full"
+                                className="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none w-full"
                             />
                             <button
                                 type="submit"
-                                className="bg-blue-600 px-4 py-2 rounded-r-lg
-                           hover:bg-blue-700 transition-colors"
+                                className="bg-blue-600 px-4 py-2 rounded-r-lg hover:bg-blue-700 transition-colors cursor-pointer"
                             >
                                 Join
                             </button>

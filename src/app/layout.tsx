@@ -87,6 +87,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${spaceGrotesk.variable} ${nunito.variable} antialiased`}
+        suppressHydrationWarning
       >
         <Navbar />
         {children}

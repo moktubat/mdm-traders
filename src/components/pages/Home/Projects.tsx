@@ -136,8 +136,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                             className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-500 cursor-pointer bg-white"
                         >
                             {/* Image Container */}
-                            <div className="relative h-96 md:h-[30rem] overflow-hidden">
-                                <div className="image-wrapper w-full h-full">
+                            <div className="relative h-96 md:h-120 overflow-hidden">
+                                <div className="image-wrapper w-full h-full relative">
                                     <Image
                                         src={urlFor(project.image).width(800).height(600).url()}
                                         alt={project.image.alt || project.title}

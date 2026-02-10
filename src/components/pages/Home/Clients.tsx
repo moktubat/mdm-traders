@@ -115,9 +115,10 @@ const Clients = () => {
                                     <Image
                                         src={client.img}
                                         alt={client.name}
-                                        className="object-contain"
                                         width={80}
                                         height={80}
+                                        style={{ width: "auto", height: "auto" }}
+                                        className="object-contain"
                                         priority
                                     />
                                     <span className="font-nunito text-blue-900 font-bold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">
@@ -147,6 +148,7 @@ const Clients = () => {
                                         className="object-contain"
                                         width={80}
                                         height={80}
+                                        style={{ width: "auto", height: "auto" }}
                                         priority
                                     />
                                     <span className="font-nunito text-blue-900 font-bold text-center text-xs sm:text-sm mt-2 line-clamp-2 w-full px-1">

@@ -204,10 +204,7 @@ const Teams = () => {
                         onClick={prevSlide}
                         onMouseEnter={() => handleArrowEnter(arrowLeftRef)}
                         onMouseLeave={() => handleArrowLeave(arrowLeftRef)}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10
-                                 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
-                                 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white
-                                 transition-colors duration-300 border-2 border-blue-100"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 border-2 border-blue-100"
                     >
                         <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                     </button>
@@ -217,10 +214,7 @@ const Teams = () => {
                         onClick={nextSlide}
                         onMouseEnter={() => handleArrowEnter(arrowRightRef)}
                         onMouseLeave={() => handleArrowLeave(arrowRightRef)}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10
-                                 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl
-                                 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white
-                                 transition-colors duration-300 border-2 border-blue-100"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-xl flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 border-2 border-blue-100"
                     >
                         <ChevronRight className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                     </button>
@@ -241,16 +235,17 @@ const Teams = () => {
                                 >
                                     <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500">
                                         {/* Image Container */}
-                                        <div className="relative aspect-[4/5] overflow-hidden">
+                                        <div className="relative aspect-4/5 overflow-hidden">
                                             <Image
                                                 src={member.image}
                                                 alt={member.name}
                                                 fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                                             />
 
                                             {/* Gradient Overlay */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
                                             {/* Hover Content */}
                                             <div className="absolute inset-0 flex items-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -268,7 +263,7 @@ const Teams = () => {
                                         {/* Info Section */}
                                         <div className="p-4 md:p-5 relative">
                                             {/* Decorative Element */}
-                                            <div className="absolute top-0 left-4 md:left-5 w-12 h-1 bg-gradient-to-r from-blue-500 to-blue-700 -translate-y-1/2"></div>
+                                            <div className="absolute top-0 left-4 md:left-5 w-12 h-1 bg-linear-to-r from-blue-500 to-blue-700 -translate-y-1/2"></div>
 
                                             <h3 className="font-grotesk text-base md:text-lg lg:text-xl font-bold text-blue-900 mb-1 leading-tight">
                                                 {member.name}

@@ -149,6 +149,7 @@ const MissionVision = () => {
                             src={mission}
                             alt="Our Mission"
                             fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
                             className="object-cover"
                             priority
                         />
@@ -194,6 +195,7 @@ const MissionVision = () => {
                             src={vision}
                             alt="Our Vision"
                             fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
                             className="object-cover"
                             priority
                         />

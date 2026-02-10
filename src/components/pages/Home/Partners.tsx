@@ -75,7 +75,7 @@ const Partners = () => {
                 {slides.map((slide, index) => (
                     <div
                         key={slide.id}
-                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out`}
+                        className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
                         style={{
                             opacity: index === currentSlide ? 1 : 0,
                             zIndex: index === currentSlide ? 0 : -1,
@@ -113,6 +113,7 @@ const Partners = () => {
                                     alt="Partner Card"
                                     width={300}
                                     height={200}
+                                    style={{ width: "auto", height: "auto" }}
                                     className="object-contain"
                                     priority
                                 />
@@ -139,9 +140,7 @@ const Partners = () => {
                 {/* Navigation Arrows */}
                 <button
                     onClick={prevSlide}
-                    className="absolute left-4 md:left-8 bottom-4 md:bottom-auto md:top-1/2 -translate-y-1/2 
-             bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 md:p-4 rounded-full 
-             transition-all duration-300 group cursor-pointer"
+                    className="absolute left-4 md:left-8 bottom-4 md:bottom-auto md:top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group cursor-pointer"
                     aria-label="Previous slide"
                 >
                     <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />

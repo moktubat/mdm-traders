@@ -6,6 +6,8 @@ import heroBg2 from "@/assets/heroBg2.webp";
 import heroBg3 from "@/assets/heroBg3.webp";
 import gsap from "gsap";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const slides = [
     {
@@ -23,6 +25,7 @@ const slides = [
 ];
 
 export default function Hero() {
+    const router = useRouter();
     const [current, setCurrent] = useState(0);
 
     const slideRefs = useRef<HTMLDivElement[]>([]);
@@ -135,7 +138,7 @@ export default function Hero() {
                     }}
                 >
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/40" />
+                    <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
                     {/* TEXT */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
@@ -148,9 +151,7 @@ export default function Hero() {
                             {slide.text.split(/<br\s*\/?>/i).map((t, j) => (
                                 <span
                                     key={j}
-                                    className="block text-4xl md:text-6xl
-                   font-bold text-white mb-2
-                   will-change-transform will-change-opacity"
+                                    className="block text-4xl md:text-6xl font-bold text-white mb-2 will-change-transform will-change-opacity"
                                 >
                                     {t.trim()}
                                 </span>
@@ -158,18 +159,17 @@ export default function Hero() {
                         </div>
 
                         {/* CTA */}
-                        {i === current && (
-                            <button
-                                ref={buttonRef}
-                                onMouseEnter={handleButtonEnter}
-                                onMouseLeave={handleButtonLeave}
-                                className="font-nunito mt-10 px-6 md:px-10 py-2 md:py-4 bg-blue-600 hover:bg-blue-700 
-                                           text-white font-semibold rounded-md shadow-lg
-                                           border border-blue-500/30 backdrop-blur-sm text-sm md:text-base"
-                            >
-                                Explore Our Products
-                            </button>
-                        )}
+                        <button
+                            ref={buttonRef}
+                            onClick={() => {
+                                router.push("/products");
+                            }}
+                            onMouseEnter={handleButtonEnter}
+                            onMouseLeave={handleButtonLeave}
+                            className="font-nunito mt-10 px-6 md:px-10 py-2 md:py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow-lg border border-blue-500/30 backdrop-blur-sm text-sm md:text-base relative z-20 cursor-pointer"
+                        >
+                            Explore Our Products
+                        </button>
                     </div>
                 </div>
             ))}
@@ -178,20 +178,14 @@ export default function Hero() {
             <div className="hidden md:block">
                 <button
                     onClick={prevSlide}
-                    className="absolute left-6 top-1/2 -translate-y-1/2
-                           w-14 h-14 rounded-full bg-white/20 backdrop-blur-md
-                           border border-white/30 text-white
-                           hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
+                    className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
                 >
                     <ChevronLeft size={28} />
                 </button>
 
                 <button
                     onClick={nextSlide}
-                    className="absolute right-6 top-1/2 -translate-y-1/2
-                           w-14 h-14 rounded-full bg-white/20 backdrop-blur-md
-                           border border-white/30 text-white
-                           hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 transition flex items-center justify-center z-10 cursor-pointer"
                 >
                     <ChevronRight size={28} />
                 </button>
@@ -202,9 +196,7 @@ export default function Hero() {
                 <div className="block md:hidden">
                     <button
                         onClick={prevSlide}
-                        className="absolute bottom-8 left-12 -translate-x-1/2
-                           p-2 rounded-full bg-white/20 backdrop-blur-md
-                           border border-white/30 text-white tracking-widest z-10 cursor-pointer"
+                        className="absolute bottom-8 left-12 -translate-x-1/2 p-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white tracking-widest z-10 cursor-pointer"
                     >
                         <ChevronLeft size={28} />
                     </button>
@@ -212,9 +204,7 @@ export default function Hero() {
 
                 <div
                     ref={counterRef}
-                    className="font-nunito absolute bottom-8 left-1/2 -translate-x-1/2
-                           px-6 py-2 rounded-full bg-white/20 backdrop-blur-md
-                           border border-white/30 text-white tracking-widest z-10"
+                    className="font-nunito absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white tracking-widest z-10"
                 >
                     0{current + 1} / 0{slides.length}
                 </div>
@@ -222,9 +212,7 @@ export default function Hero() {
                 <div className="block md:hidden">
                     <button
                         onClick={nextSlide}
-                        className="absolute bottom-8 -right-1 -translate-x-1/2
-                           p-2 rounded-full bg-white/20 backdrop-blur-md
-                           border border-white/30 text-white tracking-widest z-10 cursor-pointer"
+                        className="absolute bottom-8 -right-1 -translate-x-1/2 p-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white tracking-widest z-10 cursor-pointer"
                     >
                         <ChevronRight size={28} />
                     </button>
