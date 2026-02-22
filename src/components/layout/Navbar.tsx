@@ -4,7 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import mdmLogo from "@/assets/mdmLogo1.png";
 import gsap from "gsap";
+import Image from "next/image";
 
 /* ---------------- Desktop Nav Link ---------------- */
 const DesktopNavLink = ({
@@ -174,12 +176,15 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
-                        <span className="bg-blue-900 text-white px-2 py-1 rounded mr-2 font-bold">
-                            MDM
-                        </span>
-                        <span className={`font-bold text-lg ${textColorClass}`}>
-                            TRADERS
-                        </span>
+                        <div className="relative w-[260px] h-[28px]">
+                            <Image
+                                src={mdmLogo}
+                                alt="MDM Traders Logo"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
                     </Link>
 
                     {/* Desktop Menu */}

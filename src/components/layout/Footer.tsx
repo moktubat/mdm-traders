@@ -9,8 +9,14 @@ import {
     Linkedin,
     Twitter,
 } from "lucide-react";
+
+import mdmLogo from "@/assets/mdmLogo1.png";
+
+
+
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -56,11 +62,15 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand */}
                     <div ref={setColumnRef(0)} className="space-y-6">
-                        <div className="text-2xl font-bold flex items-center">
-                            <span className="bg-blue-600 text-white p-1 rounded mr-2">
-                                MDM
-                            </span>
-                            <span>TRADERS</span>
+                        <div className="flex items-center">
+                            <Image
+                                src={mdmLogo}
+                                alt="MDM Traders Logo"
+                                width={150}
+                                height={50}
+                                priority
+                                className="w-[260px] h-[28px]"
+                            />
                         </div>
                         <p className="font-grotesk text-gray-400 leading-relaxed">
                             Leading Two-Way Radio, high speed wireless and networking solutions

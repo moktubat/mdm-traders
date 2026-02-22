@@ -5,8 +5,8 @@ export interface Product {
   slug: {
     current: string
   }
-  mainCategory: 'portable-radio' | 'mobile-radio'
-  subCategory: 'apx' | 'mototrbo' | 'tetra'
+  mainCategory: 'portable-radio' | 'mobile-radio' | 'body-camera'
+  subCategory?: 'apx' | 'mototrbo' | 'tetra' | 'none'
   images: {
     _type: 'image'
     asset: {

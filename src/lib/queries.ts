@@ -98,9 +98,15 @@ export const productBySlugQuery = groq`
   }
 `
 
-// Get 4 related products from same sub-category (excluding current product)
+// Get 4 related products from same sub-category OR main category (for Body Camera)
+// Updated to handle Body Camera products which don't have subcategories
 export const relatedProductsQuery = groq`
-  *[_type == "product" && subCategory == $subCategory && _id != $currentId] | order(sortOrder asc) [0...4] {
+  *[_type == "product" && 
+    (
+      (subCategory == $subCategory && subCategory != null && subCategory != "none" && _id != $currentId) ||
+      (mainCategory == $mainCategory && (subCategory == null || subCategory == "none") && _id != $currentId)
+    )
+  ] | order(sortOrder asc) [0...4] {
     _id,
     title,
     slug,

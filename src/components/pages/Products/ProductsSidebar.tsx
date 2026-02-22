@@ -37,6 +37,7 @@ const ProductsSidebar = ({
         // Main category counts
         const portableCount = allProducts.filter(p => p.mainCategory === 'portable-radio').length;
         const mobileCount = allProducts.filter(p => p.mainCategory === 'mobile-radio').length;
+        const bodyCameraCount = allProducts.filter(p => p.mainCategory === 'body-camera').length;
 
         // Subcategory counts for each main category
         const getSubCategoryCount = (mainCat: string, subCat: string) => {
@@ -91,6 +92,12 @@ const ProductsSidebar = ({
                     },
                 ],
             },
+            {
+                id: "body-camera",
+                name: "Body Camera",
+                count: bodyCameraCount,
+                // No subcategories for Body Camera
+            },
         ];
     }, [allProducts]);
 
@@ -113,8 +120,8 @@ const ProductsSidebar = ({
             router.push(`/category/${categoryId}`);
             onCategoryChange(categoryId);
             onSubCategoryChange(null);
-            // Auto-expand when category is selected
-            if (!expandedCategories.includes(categoryId)) {
+            // Auto-expand when category is selected (only if it has subcategories)
+            if (categoryId !== 'body-camera' && !expandedCategories.includes(categoryId)) {
                 setExpandedCategories((prev) => [...prev, categoryId]);
             }
         }
@@ -167,6 +174,7 @@ const ProductsSidebar = ({
                     {categories.map((category) => {
                         const isExpanded = expandedCategories.includes(category.id);
                         const isSelected = selectedCategory === category.id;
+                        const hasSubcategories = category.subcategories && category.subcategories.length > 0;
 
                         return (
                             <div key={category.id}>
@@ -211,8 +219,8 @@ const ProductsSidebar = ({
                                         </div>
                                     </button>
 
-                                    {/* Expand/Collapse Button */}
-                                    {category.subcategories && (
+                                    {/* Expand/Collapse Button - Only show if category has subcategories */}
+                                    {hasSubcategories && (
                                         <button
                                             onClick={() => toggleCategory(category.id)}
                                             className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
@@ -235,11 +243,10 @@ const ProductsSidebar = ({
                                     )}
                                 </div>
 
-                                {/* Subcategories */}
-                                {category.subcategories && isExpanded && (
+                                {/* Subcategories - Only show if category has subcategories */}
+                                {hasSubcategories && isExpanded && (
                                     <div className="font-nunito ml-4 mt-1 space-y-1 animate-fadeIn">
-                                        {category.subcategories.map((sub) => {
-                                            // Fixed: Check both subcategory AND parent category match
+                                        {category.subcategories!.map((sub) => {
                                             const isSubSelected =
                                                 selectedSubCategory === sub.id &&
                                                 selectedCategory === category.id;

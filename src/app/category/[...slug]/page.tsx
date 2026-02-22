@@ -16,6 +16,7 @@ function getCategoryDisplayName(slug: string): string {
     const categoryNames: Record<string, string> = {
         "portable-radio": "Portable Radio",
         "mobile-radio": "Mobile Radio",
+        "body-camera": "Body Camera",
         "apx": "APX",
         "mototrbo": "MOTOTRBO",
         "tetra": "TETRA",
@@ -25,7 +26,7 @@ function getCategoryDisplayName(slug: string): string {
 
 // Validate if main category exists
 function isValidMainCategory(slug: string): boolean {
-    const validCategories = ["portable-radio", "mobile-radio"];
+    const validCategories = ["portable-radio", "mobile-radio", "body-camera"];
     return validCategories.includes(slug);
 }
 
@@ -37,6 +38,11 @@ function isValidSubCategory(slug: string): boolean {
 
 // Validate category and subcategory relationship
 function isValidCategorySubcategory(category: string, subcategory: string): boolean {
+    // Body Camera doesn't have subcategories
+    if (category === "body-camera") {
+        return false; // Body Camera should never have a subcategory in URL
+    }
+
     const validPairs: Record<string, string[]> = {
         "portable-radio": ["apx", "mototrbo", "tetra"],
         "mobile-radio": ["apx", "mototrbo", "tetra"],
@@ -61,6 +67,8 @@ export default async function CategoryPage({ params }: PageProps) {
     // Handle different URL patterns
     // /category/portable-radio -> slug = ["portable-radio"]
     // /category/portable-radio/apx -> slug = ["portable-radio", "apx"]
+    // /category/body-camera -> slug = ["body-camera"]
+    // /category/body-camera/anything -> 404 (Body Camera has no subcategories)
 
     if (!slug || slug.length === 0 || slug.length > 2) {
         notFound();
@@ -72,7 +80,7 @@ export default async function CategoryPage({ params }: PageProps) {
     let initialSubCategory: string | null = null;
 
     if (slug.length === 1) {
-        // Single category: /category/portable-radio
+        // Single category: /category/portable-radio, /category/mobile-radio, /category/body-camera
         const category = slug[0];
 
         if (!isValidMainCategory(category)) {
@@ -85,7 +93,9 @@ export default async function CategoryPage({ params }: PageProps) {
         // Category + Subcategory: /category/portable-radio/apx
         const [category, subcategory] = slug;
 
+        // Check if this is a valid category-subcategory pair
         if (!isValidCategorySubcategory(category, subcategory)) {
+            // If someone tries /category/body-camera/something, return 404
             notFound();
         }
 

@@ -9,11 +9,13 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export const metadata: Metadata = {
     title: "Products",
-    description: "Browse our comprehensive range of two-way radios, portable radios, and mobile radio communication systems. Featuring APX, MOTOTRBO, and TETRA solutions from leading manufacturers.",
+    description: "Browse our comprehensive range of two-way radios, body cameras, portable radios, and mobile radio communication systems. Featuring APX, MOTOTRBO, and TETRA solutions from leading manufacturers.",
     keywords: [
         "two-way radios",
         "portable radio",
         "mobile radio",
+        "body camera",
+        "body worn camera",
         "APX radio",
         "MOTOTRBO",
         "TETRA radio",
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     ],
     openGraph: {
         title: "Products | MDM Traders Limited",
-        description: "Explore professional radio communication products including portable and mobile radios for mission-critical operations.",
+        description: "Explore professional radio communication products including portable radios, mobile radios, and body cameras for mission-critical operations.",
         images: ["/favicon.png"],
     },
 };

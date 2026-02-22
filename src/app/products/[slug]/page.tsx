@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         const names: Record<string, string> = {
             'portable-radio': 'Portable Radio',
             'mobile-radio': 'Mobile Radio',
+            'body-camera': 'Body Camera',
             'apx': 'APX',
             'mototrbo': 'MOTOTRBO',
             'tetra': 'TETRA',
@@ -31,20 +32,53 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         return names[category] || category
     }
 
+    // Build description based on whether product has subcategory
+    const buildDescription = () => {
+        if (product.cardDescription) {
+            return product.cardDescription
+        }
+        
+        const mainCat = getCategoryName(product.mainCategory)
+        
+        // Body Camera products don't have subcategories
+        if (product.mainCategory === 'body-camera') {
+            return `${product.title} - Professional ${mainCat}. High-performance body-worn camera solution.`
+        }
+        
+        // Radio products have subcategories
+        const subCat = product.subCategory && product.subCategory !== 'none' 
+            ? getCategoryName(product.subCategory) 
+            : ''
+        
+        return `${product.title} - Professional ${mainCat} from ${subCat} series. High-performance radio communication solution.`
+    }
+
+    // Build keywords
+    const keywords = [
+        product.title,
+        getCategoryName(product.mainCategory),
+        'professional communication',
+    ]
+    
+    // Add subcategory to keywords if exists
+    if (product.subCategory && product.subCategory !== 'none') {
+        keywords.push(getCategoryName(product.subCategory))
+    }
+    
+    // Add category-specific keywords
+    if (product.mainCategory === 'body-camera') {
+        keywords.push('body worn camera', 'BWC', 'police camera')
+    } else {
+        keywords.push('two-way radio', 'radio communication', 'professional radio')
+    }
+
     return {
         title: product.title,
-        description: product.cardDescription || `${product.title} - Professional ${getCategoryName(product.mainCategory)} from ${getCategoryName(product.subCategory)} series. High-performance radio communication solution.`,
-        keywords: [
-            product.title,
-            getCategoryName(product.subCategory),
-            getCategoryName(product.mainCategory),
-            'two-way radio',
-            'radio communication',
-            'professional radio'
-        ],
+        description: buildDescription(),
+        keywords,
         openGraph: {
             title: `${product.title} | MDM Traders Limited`,
-            description: product.cardDescription || `Professional ${getCategoryName(product.mainCategory)} solution`,
+            description: product.cardDescription || buildDescription(),
             images: product.images?.[0] ? [
                 {
                     url: `/api/og?title=${encodeURIComponent(product.title)}`,
@@ -65,8 +99,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
     if (!product) notFound()
 
     // Fetch related products
+    // For Body Camera: match by mainCategory
+    // For Radio products: match by subCategory
     const relatedProducts = await client.fetch<Product[]>(relatedProductsQuery, {
-        subCategory: product.subCategory,
+        subCategory: product.subCategory || 'none',
+        mainCategory: product.mainCategory,
         currentId: product._id,
     })
 
