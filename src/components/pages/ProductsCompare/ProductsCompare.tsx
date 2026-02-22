@@ -152,7 +152,7 @@ export default function ProductsComparePage() {
                                         <td key={product._id} className={`p-3 align-top ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
                                             <div className="flex flex-col gap-1.5">
                                                 <span className="inline-block px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-md w-fit">
-                                                    {product.subCategory.toUpperCase()}
+                                                    {product.subCategory ? product.subCategory.toUpperCase() : 'BODY CAMERA'}
                                                 </span>
                                                 <span className="text-sm font-medium text-gray-700">
                                                     {getCategoryDisplayName(product.mainCategory)}

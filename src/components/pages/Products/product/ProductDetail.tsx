@@ -60,10 +60,14 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                             <Link href={`/category/${product.mainCategory}`} className="hover:text-blue-600 transition-colors">
                                 {getCategoryDisplayName(product.mainCategory)}
                             </Link>
-                            <span className="text-gray-300">/</span>
-                            <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
-                                {getCategoryDisplayName(product.subCategory)}
-                            </Link>
+                            {product.subCategory && product.subCategory !== 'none' && (
+                                <>
+                                    <span className="text-gray-300">/</span>
+                                    <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                        {getCategoryDisplayName(product.subCategory)}
+                                    </Link>
+                                </>
+                            )}
                             <span className="text-gray-300">/</span>
                             <span className="text-gray-900 font-medium">{product.title}</span>
                         </nav>
@@ -71,7 +75,7 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                         {/* Category Badge */}
                         <div className="mb-3">
                             <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-md">
-                                {product.subCategory.toUpperCase()}
+                                {product.subCategory ? product.subCategory.toUpperCase() : 'BODY CAMERA'}
                             </span>
                         </div>
 
@@ -84,7 +88,7 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
 
                         {/* Card Description - Highlighted Summary */}
                         {product.cardDescription && (
-                            <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
+                            <div className="mb-4">
                                 <p className="font-nunito text-base text-gray-800 leading-relaxed font-medium">
                                     {product.cardDescription}
                                 </p>
@@ -145,9 +149,14 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                                     {getCategoryDisplayName(product.mainCategory)}
                                 </Link>
                                 <span className="mx-1.5 text-gray-300">•</span>
-                                <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
-                                    {getCategoryDisplayName(product.subCategory)}
-                                </Link>
+                                {product.subCategory && product.subCategory !== 'none' && (
+                                    <>
+                                        <span className="mx-1.5 text-gray-300">•</span>
+                                        <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                            {getCategoryDisplayName(product.subCategory)}
+                                        </Link>
+                                    </>
+                                )}
                             </p>
                         </div>
                     </div>
