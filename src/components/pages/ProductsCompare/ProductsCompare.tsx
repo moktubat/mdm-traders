@@ -19,9 +19,30 @@ function getCategoryDisplayName(category: string): string {
     const names: Record<string, string> = {
         'portable-radio': 'Portable Radio',
         'mobile-radio': 'Mobile Radio',
+        'body-camera': 'Body Camera',
+        'accessories': 'Accessories',
         'apx': 'APX',
         'mototrbo': 'MOTOTRBO',
         'tetra': 'TETRA',
+        'mototrbo-two-way-radios': 'MOTOTRBO Two-Way Radios',
+        'consumer-two-way-radios': 'Consumer Two-Way Radios',
+        'batteries': 'Batteries',
+        'charger-accessories': 'Charger Accessories',
+        'portable-radios-accessories': 'Portable Radios Accessories',
+        'audio-accessories': 'Audio Accessories',
+        'batteries-and-chargers': 'Batteries and Chargers',
+        'headphones-earpieces-microphones': 'Headphones, Earpieces and Microphones',
+        'cases-and-carry-accessories': 'Cases and Carry Accessories',
+        'multi-unit-chargers': 'Multi-Unit Chargers',
+        'single-unit-chargers': 'Single-Unit Chargers',
+        'impres-batteries': 'IMPRES™ Batteries',
+        'original-two-way-radio-batteries': 'Original Two-way Radio Batteries',
+        '800m-antenna': '800M - Antenna',
+        'adapters-for-antennas': 'Adapters for Antennas',
+        'uhf-antenna-portable-radios': 'UHF Antenna for Portable Radios',
+        'ear-microphone-solutions': 'Ear Microphone Solutions',
+        'earsets-and-earpieces': 'Earsets and Earpieces',
+        'headsets': 'Headsets',
     }
     return names[category] || category
 }
@@ -152,7 +173,7 @@ export default function ProductsComparePage() {
                                         <td key={product._id} className={`p-3 align-top ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
                                             <div className="flex flex-col gap-1.5">
                                                 <span className="inline-block px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-md w-fit">
-                                                    {product.subCategory ? product.subCategory.toUpperCase() : 'BODY CAMERA'}
+                                                    {(product.subSubSubCategory ?? product.subSubCategory ?? product.subCategory ?? product.mainCategory).toUpperCase()}
                                                 </span>
                                                 <span className="text-sm font-medium text-gray-700">
                                                     {getCategoryDisplayName(product.mainCategory)}

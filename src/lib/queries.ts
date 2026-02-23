@@ -17,7 +17,6 @@ export const projectsQuery = groq`
   }
 `
 
-// Get single project by slug (for future project detail pages)
 export const projectBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0] {
     _id,
@@ -35,7 +34,6 @@ export const projectBySlugQuery = groq`
   }
 `
 
-// Get projects by category
 export const projectsByCategoryQuery = groq`
   *[_type == "project" && category == $category] | order(sortOrder asc, contractDate desc) {
     _id,
@@ -50,7 +48,6 @@ export const projectsByCategoryQuery = groq`
   }
 `
 
-// Get featured/recent projects (limit 3-6)
 export const featuredProjectsQuery = groq`
   *[_type == "project"] | order(sortOrder asc, contractDate desc) [0...6] {
     _id,
@@ -65,7 +62,8 @@ export const featuredProjectsQuery = groq`
   }
 `
 
-// Get all products
+// ─── PRODUCT QUERIES ──────────────────────────────────────────────────────────
+
 export const productsQuery = groq`
   *[_type == "product"] | order(sortOrder asc, _createdAt desc) {
     _id,
@@ -74,6 +72,8 @@ export const productsQuery = groq`
     slug,
     mainCategory,
     subCategory,
+    subSubCategory,
+    subSubSubCategory,
     images,
     cardDescription,
     shortDescription,
@@ -81,7 +81,6 @@ export const productsQuery = groq`
   }
 `
 
-// Get single product by slug
 export const productBySlugQuery = groq`
   *[_type == "product" && slug.current == $slug][0] {
     _id,
@@ -90,6 +89,8 @@ export const productBySlugQuery = groq`
     slug,
     mainCategory,
     subCategory,
+    subSubCategory,
+    subSubSubCategory,
     images,
     cardDescription,
     shortDescription,
@@ -98,13 +99,18 @@ export const productBySlugQuery = groq`
   }
 `
 
-// Get 4 related products from same sub-category OR main category (for Body Camera)
-// Updated to handle Body Camera products which don't have subcategories
+// Related products query — matches deepest available category level
 export const relatedProductsQuery = groq`
-  *[_type == "product" && 
+  *[_type == "product" && _id != $currentId &&
     (
-      (subCategory == $subCategory && subCategory != null && subCategory != "none" && _id != $currentId) ||
-      (mainCategory == $mainCategory && (subCategory == null || subCategory == "none") && _id != $currentId)
+      // Match by deepest level first: subSubSubCategory
+      ($subSubSubCategory != null && subSubSubCategory == $subSubSubCategory) ||
+      // Then subSubCategory
+      ($subSubCategory != null && $subSubSubCategory == null && subSubCategory == $subSubCategory) ||
+      // Then subCategory (for accessories without deeper levels, or radio products)
+      ($subCategory != null && $subSubCategory == null && subCategory == $subCategory) ||
+      // Fallback: same mainCategory (body camera / accessories at top level)
+      (mainCategory == $mainCategory && subCategory == null)
     )
   ] | order(sortOrder asc) [0...4] {
     _id,
@@ -113,6 +119,8 @@ export const relatedProductsQuery = groq`
     images,
     mainCategory,
     subCategory,
+    subSubCategory,
+    subSubSubCategory,
     cardDescription,
     shortDescription
   }

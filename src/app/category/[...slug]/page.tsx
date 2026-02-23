@@ -11,52 +11,63 @@ interface PageProps {
     params: Promise<{ slug: string[] }>;
 }
 
-// Helper to get category display name
-function getCategoryDisplayName(slug: string): string {
-    const categoryNames: Record<string, string> = {
-        "portable-radio": "Portable Radio",
-        "mobile-radio": "Mobile Radio",
-        "body-camera": "Body Camera",
-        "apx": "APX",
-        "mototrbo": "MOTOTRBO",
-        "tetra": "TETRA",
-    };
-    return categoryNames[slug] || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
+// ─── LABEL MAP ────────────────────────────────────────────────────────────────
+const labelMap: Record<string, string> = {
+    "portable-radio": "Portable Radio",
+    "mobile-radio": "Mobile Radio",
+    "body-camera": "Body Camera",
+    "accessories": "Accessories",
+    "apx": "APX",
+    "mototrbo": "MOTOTRBO",
+    "tetra": "TETRA",
+    "mototrbo-two-way-radios": "MOTOTRBO Two-Way Radios",
+    "consumer-two-way-radios": "Consumer Two-Way Radios",
+    "batteries": "Batteries",
+    "charger-accessories": "Charger Accessories",
+    "portable-radios-accessories": "Portable Radios Accessories",
+    "audio-accessories": "Audio Accessories",
+    "batteries-and-chargers": "Batteries and Chargers",
+    "headphones-earpieces-microphones": "Headphones, Earpieces and Microphones",
+    "cases-and-carry-accessories": "Cases and Carry Accessories",
+    "multi-unit-chargers": "Multi-Unit Chargers",
+    "single-unit-chargers": "Single-Unit Chargers",
+    'impres-batteries': 'IMPRES™ Batteries',
+    'original-two-way-radio-batteries': 'Original Two-way Radio Batteries',
+    "800m-antenna": "800M - Antenna",
+    "adapters-for-antennas": "Adapters for Antennas",
+    "uhf-antenna-portable-radios": "UHF Antenna for Portable Radios",
+    "ear-microphone-solutions": "Ear Microphone Solutions",
+    "earsets-and-earpieces": "Earsets and Earpieces",
+    "headsets": "Headsets",
+};
 
-// Validate if main category exists
-function isValidMainCategory(slug: string): boolean {
-    const validCategories = ["portable-radio", "mobile-radio", "body-camera"];
-    return validCategories.includes(slug);
-}
+const label = (slug: string) =>
+    labelMap[slug] || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-// Validate if subcategory exists
-function isValidSubCategory(slug: string): boolean {
-    const validSubCategories = ["apx", "mototrbo", "tetra"];
-    return validSubCategories.includes(slug);
-}
-
-// Validate category and subcategory relationship
-function isValidCategorySubcategory(category: string, subcategory: string): boolean {
-    // Body Camera doesn't have subcategories
-    if (category === "body-camera") {
-        return false; // Body Camera should never have a subcategory in URL
-    }
-
-    const validPairs: Record<string, string[]> = {
-        "portable-radio": ["apx", "mototrbo", "tetra"],
-        "mobile-radio": ["apx", "mototrbo", "tetra"],
-    };
-
-    return validPairs[category]?.includes(subcategory) || false;
-}
+// ─── VALID TREE ───────────────────────────────────────────────────────────────
+const validTree: Record<string, Record<string, Record<string, string[]>>> = {
+    "portable-radio": { apx: {}, mototrbo: {}, tetra: {} } as any,
+    "mobile-radio": { apx: {}, mototrbo: {}, tetra: {} } as any,
+    "body-camera": {},
+    "accessories": {
+        "mototrbo-two-way-radios": {
+            "batteries": ["impres-batteries", "original-two-way-radio-batteries"],
+            "charger-accessories": ["multi-unit-chargers", "single-unit-chargers"],
+            "portable-radios-accessories": ["800m-antenna", "adapters-for-antennas", "uhf-antenna-portable-radios"],
+            "audio-accessories": ["ear-microphone-solutions", "earsets-and-earpieces", "headsets"],
+        },
+        "consumer-two-way-radios": {
+            "batteries-and-chargers": [],
+            "headphones-earpieces-microphones": [],
+            "cases-and-carry-accessories": [],
+        },
+    },
+};
 
 async function getProducts(): Promise<Product[]> {
     try {
-        const products = await client.fetch<Product[]>(productsQuery);
-        return products;
-    } catch (error) {
-        console.error("Error fetching products:", error);
+        return await client.fetch<Product[]>(productsQuery);
+    } catch {
         return [];
     }
 }
@@ -64,48 +75,33 @@ async function getProducts(): Promise<Product[]> {
 export default async function CategoryPage({ params }: PageProps) {
     const { slug } = await params;
 
-    // Handle different URL patterns
-    // /category/portable-radio -> slug = ["portable-radio"]
-    // /category/portable-radio/apx -> slug = ["portable-radio", "apx"]
-    // /category/body-camera -> slug = ["body-camera"]
-    // /category/body-camera/anything -> 404 (Body Camera has no subcategories)
+    if (!slug || slug.length === 0 || slug.length > 4) notFound();
 
-    if (!slug || slug.length === 0 || slug.length > 2) {
-        notFound();
+    const [cat, sub, subSub, subSubSub] = slug;
+
+    // Validate each level exists in tree
+    if (!validTree[cat]) notFound();
+    if (sub && !(validTree[cat] as any)[sub] !== false && !((validTree[cat] as any)[sub] !== undefined)) {
+        // sub must exist as key in validTree[cat]
+        if (!(sub in validTree[cat])) notFound();
     }
+    if (subSub) {
+        const subTree = (validTree[cat] as any)[sub];
+        if (!subTree || !(subSub in subTree)) notFound();
+    }
+    if (subSubSub) {
+        const subSubTree = ((validTree[cat] as any)[sub] as any)?.[subSub];
+        if (!Array.isArray(subSubTree) || !subSubTree.includes(subSubSub)) notFound();
+    }
+
+    // Body camera has no subcategories
+    if (cat === "body-camera" && sub) notFound();
 
     const allProducts = await getProducts();
-    let pageTitle = "";
-    let initialCategory: string | null = null;
-    let initialSubCategory: string | null = null;
 
-    if (slug.length === 1) {
-        // Single category: /category/portable-radio, /category/mobile-radio, /category/body-camera
-        const category = slug[0];
-
-        if (!isValidMainCategory(category)) {
-            notFound();
-        }
-
-        initialCategory = category;
-        pageTitle = getCategoryDisplayName(category);
-    } else if (slug.length === 2) {
-        // Category + Subcategory: /category/portable-radio/apx
-        const [category, subcategory] = slug;
-
-        // Check if this is a valid category-subcategory pair
-        if (!isValidCategorySubcategory(category, subcategory)) {
-            // If someone tries /category/body-camera/something, return 404
-            notFound();
-        }
-
-        initialCategory = category;
-        initialSubCategory = subcategory;
-
-        const categoryName = getCategoryDisplayName(category);
-        const subcategoryName = getCategoryDisplayName(subcategory);
-        pageTitle = `${categoryName} - ${subcategoryName}`;
-    }
+    // Build page title from breadcrumb parts
+    const titleParts = [cat, sub, subSub, subSubSub].filter(Boolean).map(label);
+    const pageTitle = titleParts.join(" › ");
 
     return (
         <div>
@@ -115,8 +111,10 @@ export default async function CategoryPage({ params }: PageProps) {
             />
             <ProductsContent
                 allProducts={allProducts}
-                initialCategory={initialCategory}
-                initialSubCategory={initialSubCategory}
+                initialCategory={cat ?? null}
+                initialSubCategory={sub ?? null}
+                initialSubSubCategory={subSub ?? null}
+                initialSubSubSubCategory={subSubSub ?? null}
             />
         </div>
     );

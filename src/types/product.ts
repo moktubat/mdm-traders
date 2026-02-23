@@ -5,8 +5,27 @@ export interface Product {
   slug: {
     current: string
   }
-  mainCategory: 'portable-radio' | 'mobile-radio' | 'body-camera'
-  subCategory?: 'apx' | 'mototrbo' | 'tetra' | 'none'
+  mainCategory: 'portable-radio' | 'mobile-radio' | 'body-camera' | 'accessories'
+  subCategory?: 'apx' | 'mototrbo' | 'tetra' | 'none' | 'mototrbo-two-way-radios' | 'consumer-two-way-radios'
+  subSubCategory?:
+  | 'batteries'
+  | 'charger-accessories'
+  | 'portable-radios-accessories'
+  | 'audio-accessories'
+  | 'batteries-and-chargers'
+  | 'headphones-earpieces-microphones'
+  | 'cases-and-carry-accessories'
+  subSubSubCategory?:
+  | 'multi-unit-chargers'
+  | 'single-unit-chargers'
+  | 'impres-batteries'
+  | 'original-two-way-radio-batteries'
+  | '800m-antenna'
+  | 'adapters-for-antennas'
+  | 'uhf-antenna-portable-radios'
+  | 'ear-microphone-solutions'
+  | 'earsets-and-earpieces'
+  | 'headsets'
   images: {
     _type: 'image'
     asset: {
@@ -16,8 +35,8 @@ export interface Product {
     alt?: string
     isMainImage?: boolean
   }[]
-  cardDescription: string // For product cards in listings (plain text)
-  shortDescription: any[] // Portable Text for detail page under title
-  fullDescription?: any[] // Portable Text blocks for full details
+  cardDescription: string
+  shortDescription: any[]
+  fullDescription?: any[]
   sortOrder?: number
 }

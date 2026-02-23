@@ -25,9 +25,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             'portable-radio': 'Portable Radio',
             'mobile-radio': 'Mobile Radio',
             'body-camera': 'Body Camera',
+            'accessories': 'Accessories',
             'apx': 'APX',
             'mototrbo': 'MOTOTRBO',
             'tetra': 'TETRA',
+            'mototrbo-two-way-radios': 'MOTOTRBO Two-Way Radios',
+            'consumer-two-way-radios': 'Consumer Two-Way Radios',
+            'batteries': 'Batteries',
+            'charger-accessories': 'Charger Accessories',
+            'portable-radios-accessories': 'Portable Radios Accessories',
+            'audio-accessories': 'Audio Accessories',
+            'batteries-and-chargers': 'Batteries and Chargers',
+            'headphones-earpieces-microphones': 'Headphones, Earpieces and Microphones',
+            'cases-and-carry-accessories': 'Cases and Carry Accessories',
+            'multi-unit-chargers': 'Multi-Unit Chargers',
+            'single-unit-chargers': 'Single-Unit Chargers',
+            'impres-batteries': 'IMPRES™ Batteries',
+            'original-two-way-radio-batteries': 'Original Two-way Radio Batteries',
+            '800m-antenna': '800M - Antenna',
+            'adapters-for-antennas': 'Adapters for Antennas',
+            'uhf-antenna-portable-radios': 'UHF Antenna for Portable Radios',
+            'ear-microphone-solutions': 'Ear Microphone Solutions',
+            'earsets-and-earpieces': 'Earsets and Earpieces',
+            'headsets': 'Headsets',
         }
         return names[category] || category
     }
@@ -37,19 +57,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         if (product.cardDescription) {
             return product.cardDescription
         }
-        
+
         const mainCat = getCategoryName(product.mainCategory)
-        
+
         // Body Camera products don't have subcategories
         if (product.mainCategory === 'body-camera') {
             return `${product.title} - Professional ${mainCat}. High-performance body-worn camera solution.`
         }
-        
+
         // Radio products have subcategories
-        const subCat = product.subCategory && product.subCategory !== 'none' 
-            ? getCategoryName(product.subCategory) 
+        const subCat = product.subCategory && product.subCategory !== 'none'
+            ? getCategoryName(product.subCategory)
             : ''
-        
+
         return `${product.title} - Professional ${mainCat} from ${subCat} series. High-performance radio communication solution.`
     }
 
@@ -59,12 +79,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         getCategoryName(product.mainCategory),
         'professional communication',
     ]
-    
+
     // Add subcategory to keywords if exists
     if (product.subCategory && product.subCategory !== 'none') {
         keywords.push(getCategoryName(product.subCategory))
     }
-    
+
     // Add category-specific keywords
     if (product.mainCategory === 'body-camera') {
         keywords.push('body worn camera', 'BWC', 'police camera')
@@ -102,7 +122,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
     // For Body Camera: match by mainCategory
     // For Radio products: match by subCategory
     const relatedProducts = await client.fetch<Product[]>(relatedProductsQuery, {
-        subCategory: product.subCategory || 'none',
+        subCategory: product.subCategory || null,
+        subSubCategory: product.subSubCategory || null,
+        subSubSubCategory: product.subSubSubCategory || null,
         mainCategory: product.mainCategory,
         currentId: product._id,
     })

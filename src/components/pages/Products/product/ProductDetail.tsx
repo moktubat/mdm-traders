@@ -19,12 +19,34 @@ function getCategoryDisplayName(category: string): string {
     const names: Record<string, string> = {
         'portable-radio': 'Portable Radio',
         'mobile-radio': 'Mobile Radio',
+        'body-camera': 'Body Camera',
+        'accessories': 'Accessories',
         'apx': 'APX',
         'mototrbo': 'MOTOTRBO',
         'tetra': 'TETRA',
+        'mototrbo-two-way-radios': 'MOTOTRBO Two-Way Radios',
+        'consumer-two-way-radios': 'Consumer Two-Way Radios',
+        'batteries': 'Batteries',
+        'charger-accessories': 'Charger Accessories',
+        'portable-radios-accessories': 'Portable Radios Accessories',
+        'audio-accessories': 'Audio Accessories',
+        'batteries-and-chargers': 'Batteries and Chargers',
+        'headphones-earpieces-microphones': 'Headphones, Earpieces and Microphones',
+        'cases-and-carry-accessories': 'Cases and Carry Accessories',
+        'multi-unit-chargers': 'Multi-Unit Chargers',
+        'single-unit-chargers': 'Single-Unit Chargers',
+        'impres-batteries': 'IMPRES™ Batteries',
+        'original-two-way-radio-batteries': 'Original Two-way Radio Batteries',
+        '800m-antenna': '800M - Antenna',
+        'adapters-for-antennas': 'Adapters for Antennas',
+        'uhf-antenna-portable-radios': 'UHF Antenna for Portable Radios',
+        'ear-microphone-solutions': 'Ear Microphone Solutions',
+        'earsets-and-earpieces': 'Earsets and Earpieces',
+        'headsets': 'Headsets',
     }
     return names[category] || category
 }
+
 
 export default function ProductDetail({ product, relatedProducts }: ProductDetailProps) {
     const { compareProducts, toggleCompare, isInCompare } = useCompare()
@@ -63,8 +85,24 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                             {product.subCategory && product.subCategory !== 'none' && (
                                 <>
                                     <span className="text-gray-300">/</span>
-                                    <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                    <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="hover:text-blue-600 transition-colors">
                                         {getCategoryDisplayName(product.subCategory)}
+                                    </Link>
+                                </>
+                            )}
+                            {product.subSubCategory && (
+                                <>
+                                    <span className="text-gray-300">/</span>
+                                    <Link href={`/category/${product.mainCategory}/${product.subCategory}/${product.subSubCategory}`} className="hover:text-blue-600 transition-colors">
+                                        {getCategoryDisplayName(product.subSubCategory)}
+                                    </Link>
+                                </>
+                            )}
+                            {product.subSubSubCategory && (
+                                <>
+                                    <span className="text-gray-300">/</span>
+                                    <Link href={`/category/${product.mainCategory}/${product.subCategory}/${product.subSubCategory}/${product.subSubSubCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                        {getCategoryDisplayName(product.subSubSubCategory)}
                                     </Link>
                                 </>
                             )}
@@ -75,7 +113,13 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
                         {/* Category Badge */}
                         <div className="mb-3">
                             <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-md">
-                                {product.subCategory ? product.subCategory.toUpperCase() : 'BODY CAMERA'}
+                                {product.subSubSubCategory
+                                    ? getCategoryDisplayName(product.subSubSubCategory).toUpperCase()
+                                    : product.subSubCategory
+                                        ? getCategoryDisplayName(product.subSubCategory).toUpperCase()
+                                        : product.subCategory && product.subCategory !== 'none'
+                                            ? product.subCategory.toUpperCase()
+                                            : product.mainCategory.toUpperCase()}
                             </span>
                         </div>
 
@@ -143,17 +187,32 @@ export default function ProductDetail({ product, relatedProducts }: ProductDetai
 
                         {/* Categories Info */}
                         <div className="font-nunito mt-6 pt-6 border-t border-gray-200">
-                            <p className="text-sm text-gray-500">
-                                Categories:{' '}
+                            <p className="text-sm text-gray-500 flex flex-wrap items-center gap-1">
+                                <span>Categories:</span>
                                 <Link href={`/category/${product.mainCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                                     {getCategoryDisplayName(product.mainCategory)}
                                 </Link>
-                                <span className="mx-1.5 text-gray-300">•</span>
                                 {product.subCategory && product.subCategory !== 'none' && (
                                     <>
-                                        <span className="mx-1.5 text-gray-300">•</span>
+                                        <span className="text-gray-300">•</span>
                                         <Link href={`/category/${product.mainCategory}/${product.subCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                                             {getCategoryDisplayName(product.subCategory)}
+                                        </Link>
+                                    </>
+                                )}
+                                {product.subSubCategory && (
+                                    <>
+                                        <span className="text-gray-300">•</span>
+                                        <Link href={`/category/${product.mainCategory}/${product.subCategory}/${product.subSubCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                            {getCategoryDisplayName(product.subSubCategory)}
+                                        </Link>
+                                    </>
+                                )}
+                                {product.subSubSubCategory && (
+                                    <>
+                                        <span className="text-gray-300">•</span>
+                                        <Link href={`/category/${product.mainCategory}/${product.subCategory}/${product.subSubCategory}/${product.subSubSubCategory}`} className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                            {getCategoryDisplayName(product.subSubSubCategory)}
                                         </Link>
                                     </>
                                 )}

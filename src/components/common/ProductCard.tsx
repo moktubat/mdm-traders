@@ -62,7 +62,7 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <Link href={`/products/${product.slug.current}`}>
                             <span className="font-nunito inline-block px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-md mb-2">
-                                <span>{(product.subCategory ?? "GENERAL").toUpperCase()}</span>
+                                <span>{(product.subSubSubCategory ?? product.subSubCategory ?? product.subCategory ?? product.mainCategory).toUpperCase()}</span>
                             </span>
 
                             <h3 className="font-grotesk text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
@@ -135,7 +135,7 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
                     {/* Category Badge - Overlay */}
                     <div className="absolute top-3 left-3">
                         <span className="font-nunito inline-block px-2.5 py-1 bg-white/95 backdrop-blur-sm text-blue-700 text-xs font-semibold rounded-md shadow-sm">
-                            <span>{(product.subCategory ?? "GENERAL").toUpperCase()}</span>
+                            <span>{(product.subSubSubCategory ?? product.subSubCategory ?? product.subCategory ?? product.mainCategory).toUpperCase()}</span>
                         </span>
                     </div>
                 </div>
