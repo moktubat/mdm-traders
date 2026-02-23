@@ -34,10 +34,11 @@ const Footer: React.FC = () => {
     useEffect(() => {
         if (!footerRef.current) return;
 
-        gsap.fromTo(
-            columnRefs.current,
-            { y: 40, opacity: 0 },
-            {
+        // Set initial state immediately so elements are hidden before trigger fires
+        gsap.set(columnRefs.current, { y: 40, opacity: 0 });
+
+        const ctx = gsap.context(() => {
+            gsap.to(columnRefs.current, {
                 y: 0,
                 opacity: 1,
                 duration: 0.8,
@@ -45,10 +46,13 @@ const Footer: React.FC = () => {
                 ease: "power3.out",
                 scrollTrigger: {
                     trigger: footerRef.current,
-                    start: "top 80%",
+                    start: "top 90%", // trigger earlier
+                    toggleActions: "play none none none",
                 },
-            }
-        );
+            });
+        }, footerRef);
+
+        return () => ctx.revert();
     }, []);
 
     return (
