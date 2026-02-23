@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
                                 width={150}
                                 height={50}
                                 priority
-                                className="w-[260px] h-[28px]"
+                                className="w-50 h-7 md:w-65"
                             />
                         </div>
                         <p className="font-grotesk text-gray-400 leading-relaxed">

@@ -31,7 +31,7 @@ export default function ProductCard({ product, viewMode = 'grid' }: ProductCardP
     useEffect(() => {
         setIsChecked(isInCompare(product._id))
     }, [compareProducts, product._id, isInCompare])
-    
+
 
     const handleToggle = () => {
         toggleCompare(product)

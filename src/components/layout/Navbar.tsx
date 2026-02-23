@@ -94,6 +94,8 @@ const Navbar = () => {
     const pathname = usePathname();
     const cleanPath = pathname.replace(/\/$/, "") || "/";
 
+    const isHomePage = cleanPath === "/";
+
     const navLinks = [
         { name: "Home", href: "/" },
         { name: "About", href: "/about" },
@@ -151,6 +153,7 @@ const Navbar = () => {
     }, [isOpen]);
 
     /* Pages WITHOUT header */
+
     const pagesWithoutHeader = ["/products-compare"];
 
     const isProductDetailPage =
@@ -163,10 +166,11 @@ const Navbar = () => {
     const useLightStyle =
         scrolled || isProductDetailPage || isPageWithoutHeader;
 
-    const textColorClass = useLightStyle ? "text-gray-800" : "text-white";
-    const bgClass = useLightStyle
-        ? "backdrop-blur-xl bg-white/70 shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2"
-        : "bg-transparent py-4";
+    const textColorClass = isHomePage && !scrolled ? "text-white" : "text-gray-800";
+
+    const bgClass = isHomePage && !scrolled
+        ? "bg-transparent py-4"
+        : `backdrop-blur-xl bg-white/70 shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${useLightStyle ? "py-2" : "py-4"}`;
 
     return (
         <nav
@@ -176,12 +180,12 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
-                        <div className="relative w-[260px] h-[28px]">
+                        <div className="relative w-40 h-7 md:w-65 md:h-7">
                             <Image
                                 src={mdmLogo}
                                 alt="MDM Traders Logo"
                                 fill
-                                className="object-contain"
+                                className="w-65 h-7 object-contain"
                                 priority
                             />
                         </div>
