@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Contact Us | MDM Traders Limited",
         description: "Reach out to Bangladesh's leading two-way radio and telecommunication solutions provider. We're here to help with your communication needs.",
-        images: ["/favicon.png"],
+        images: ["/favicon.ico"],
     },
 };
 

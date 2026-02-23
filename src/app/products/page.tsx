@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Products | MDM Traders Limited",
         description: "Explore professional radio communication products including portable radios, mobile radios, and body cameras for mission-critical operations.",
-        images: ["/favicon.png"],
+        images: ["/favicon.ico"],
     },
 };
 

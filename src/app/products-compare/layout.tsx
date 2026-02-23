@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Compare Products | MDM Traders Limited",
         description: "Compare professional radio communication products side by side",
-        images: ["/favicon.png"],
+        images: ["/favicon.ico"],
     },
 };
 

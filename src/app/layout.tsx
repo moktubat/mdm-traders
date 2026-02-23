@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "MDM Traders Limited",
     images: [
       {
-        url: "/favicon.png",
+        url: "/favicon.ico",
         width: 1200,
         height: 630,
         alt: "MDM Traders Limited Communication Infrastructure",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "MDM Traders Limited | Communication & Radio System Experts",
     description:
       "Bangladesh's trusted supplier of two-way radio, DMR trunking, and mission-critical telecom systems.",
-    images: ["/favicon.png"],
+    images: ["/favicon.ico"],
   },
 
   robots: {
@@ -71,8 +71,10 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+    ],
+    apple: "/favicon.ico",
   },
 
   category: "technology",

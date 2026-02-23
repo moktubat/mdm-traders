@@ -32,27 +32,34 @@ const Footer: React.FC = () => {
 
     /* Scroll reveal animation */
     useEffect(() => {
-        if (!footerRef.current) return;
+        const columns = columnRefs.current;
 
-        // Set initial state immediately so elements are hidden before trigger fires
-        gsap.set(columnRefs.current, { y: 40, opacity: 0 });
+        // Hide initially
+        gsap.set(columns, { y: 40, opacity: 0 });
 
-        const ctx = gsap.context(() => {
-            gsap.to(columnRefs.current, {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.15,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: footerRef.current,
-                    start: "top 90%", // trigger earlier
-                    toggleActions: "play none none none",
-                },
-            });
-        }, footerRef);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        gsap.to(columns, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            stagger: 0.15,
+                            ease: "power3.out",
+                        });
+                        observer.disconnect(); // run once
+                    }
+                });
+            },
+            { threshold: 0.1 } // trigger when 10% visible
+        );
 
-        return () => ctx.revert();
+        if (footerRef.current) {
+            observer.observe(footerRef.current);
+        }
+
+        return () => observer.disconnect();
     }, []);
 
     return (

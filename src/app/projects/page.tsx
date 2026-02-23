@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Our Projects | MDM Traders Limited",
         description: "Discover our track record of delivering mission-critical communication infrastructure across Bangladesh's government, defense, and enterprise sectors.",
-        images: ["/favicon.png"],
+        images: ["/favicon.ico"],
     },
 };
 
