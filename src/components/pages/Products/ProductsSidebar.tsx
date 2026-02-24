@@ -53,205 +53,226 @@ const ProductsSidebar = ({
     allProducts = [],
 }: ProductsSidebarProps) => {
     const router = useRouter();
-    const [expandedCategories, setExpandedCategories] = useState<string[]>([
-        "portable-radio",
-        "mobile-radio",
-    ]);
-    const [expandedSubCategories, setExpandedSubCategories] = useState<string[]>([]);
-    const [expandedSubSubCategories, setExpandedSubSubCategories] = useState<string[]>([]);
 
-    // ─── COUNT HELPERS ──────────────────────────────────────────────────────
-    const count = (filters: Partial<Product>) =>
-        allProducts.filter((p) =>
-            Object.entries(filters).every(([k, v]) => (p as any)[k] === v)
-        ).length;
+    // Initialize expanded state from props so page navigation preserves open state.
+    // e.g. if arriving at /category/accessories, accessories is already expanded.
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(selectedCategory);
+    const [expandedSubCategories, setExpandedSubCategories] = useState<string[]>(
+        selectedSubCategory ? [selectedSubCategory] : []
+    );
+    const [expandedSubSubCategories, setExpandedSubSubCategories] = useState<string[]>(
+        selectedSubSubCategory ? [selectedSubSubCategory] : []
+    );
 
-    // ─── CATEGORY TREE ──────────────────────────────────────────────────────
-    const categories: Category[] = useMemo(() => [
-        {
-            id: "portable-radio",
-            name: "Portable Radio",
-            count: count({ mainCategory: "portable-radio" }),
-            subcategories: [
-                { id: "apx", name: "APX", count: count({ mainCategory: "portable-radio", subCategory: "apx" }) },
-                { id: "mototrbo", name: "MOTOTRBO", count: count({ mainCategory: "portable-radio", subCategory: "mototrbo" }) },
-                { id: "tetra", name: "TETRA", count: count({ mainCategory: "portable-radio", subCategory: "tetra" }) },
-            ],
-        },
-        {
-            id: "mobile-radio",
-            name: "Mobile Radio",
-            count: count({ mainCategory: "mobile-radio" }),
-            subcategories: [
-                { id: "apx", name: "APX", count: count({ mainCategory: "mobile-radio", subCategory: "apx" }) },
-                { id: "mototrbo", name: "MOTOTRBO", count: count({ mainCategory: "mobile-radio", subCategory: "mototrbo" }) },
-                { id: "tetra", name: "TETRA", count: count({ mainCategory: "mobile-radio", subCategory: "tetra" }) },
-            ],
-        },
-        {
-            id: "body-camera",
-            name: "Body Camera",
-            count: count({ mainCategory: "body-camera" }),
-        },
-        {
-            id: "accessories",
-            name: "Accessories",
-            count: count({ mainCategory: "accessories" }),
-            subcategories: [
-                {
-                    id: "mototrbo-two-way-radios",
-                    name: "MOTOTRBO Two-Way Radios",
-                    count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios" }),
-                    subSubCategories: [
-                        {
-                            id: "batteries",
-                            name: "Batteries",
-                            count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "batteries" }),
-                            subSubSubCategories: [
-                                {
-                                    id: "impres-batteries",
-                                    name: "IMPRES™ Batteries",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "batteries", subSubSubCategory: "impres-batteries" }),
-                                },
-                                {
-                                    id: "original-two-way-radio-batteries",
-                                    name: "Original Two-way Radio Batteries",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "batteries", subSubSubCategory: "original-two-way-radio-batteries" }),
-                                },
-                            ],
-                        },
-                        {
-                            id: "charger-accessories",
-                            name: "Charger Accessories",
-                            count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "charger-accessories" }),
-                            subSubSubCategories: [
-                                {
-                                    id: "multi-unit-chargers",
-                                    name: "Multi-Unit Chargers",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "charger-accessories", subSubSubCategory: "multi-unit-chargers" }),
-                                },
-                                {
-                                    id: "single-unit-chargers",
-                                    name: "Single-Unit Chargers",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "charger-accessories", subSubSubCategory: "single-unit-chargers" }),
-                                },
-                            ],
-                        },
-                        {
-                            id: "portable-radios-accessories",
-                            name: "Portable Radios Accessories",
-                            count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "portable-radios-accessories" }),
-                            subSubSubCategories: [
-                                {
-                                    id: "800m-antenna",
-                                    name: "800M - Antenna",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "800m-antenna" }),
-                                },
-                                {
-                                    id: "adapters-for-antennas",
-                                    name: "Adapters for Antennas",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "adapters-for-antennas" }),
-                                },
-                                {
-                                    id: "uhf-antenna-portable-radios",
-                                    name: "UHF Antenna for Portable Radios",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "uhf-antenna-portable-radios" }),
-                                },
-                            ],
-                        },
-                        {
-                            id: "audio-accessories",
-                            name: "Audio Accessories",
-                            count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "audio-accessories" }),
-                            subSubSubCategories: [
-                                {
-                                    id: "ear-microphone-solutions",
-                                    name: "Ear Microphone Solutions",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "ear-microphone-solutions" }),
-                                },
-                                {
-                                    id: "earsets-and-earpieces",
-                                    name: "Earsets and Earpieces",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "earsets-and-earpieces" }),
-                                },
-                                {
-                                    id: "headsets",
-                                    name: "Headsets",
-                                    count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "headsets" }),
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    id: "consumer-two-way-radios",
-                    name: "Consumer Two-Way Radios",
-                    count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios" }),
-                    subSubCategories: [
-                        {
-                            id: "batteries-and-chargers",
-                            name: "Batteries and Chargers",
-                            count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "batteries-and-chargers" }),
-                        },
-                        {
-                            id: "headphones-earpieces-microphones",
-                            name: "Headphones, Earpieces and Microphones",
-                            count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "headphones-earpieces-microphones" }),
-                        },
-                        {
-                            id: "cases-and-carry-accessories",
-                            name: "Cases and Carry Accessories",
-                            count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "cases-and-carry-accessories" }),
-                        },
-                    ],
-                },
-            ],
-        },
-    ], [allProducts]);
+    // ─── CATEGORY TREE (count helper lives inside useMemo to satisfy React Compiler) ──
+    const categories: Category[] = useMemo(() => {
+        // Helper defined inside useMemo — inferred dependency is allProducts ✓
+        const count = (filters: Partial<Product>) =>
+            allProducts.filter((p) =>
+                Object.entries(filters).every(([k, v]) => (p as any)[k] === v)
+            ).length;
+
+        return [
+            {
+                id: "portable-radio",
+                name: "Portable Radio",
+                count: count({ mainCategory: "portable-radio" }),
+                subcategories: [
+                    { id: "apx", name: "APX", count: count({ mainCategory: "portable-radio", subCategory: "apx" }) },
+                    { id: "mototrbo", name: "MOTOTRBO", count: count({ mainCategory: "portable-radio", subCategory: "mototrbo" }) },
+                    { id: "tetra", name: "TETRA", count: count({ mainCategory: "portable-radio", subCategory: "tetra" }) },
+                ],
+            },
+            {
+                id: "mobile-radio",
+                name: "Mobile Radio",
+                count: count({ mainCategory: "mobile-radio" }),
+                subcategories: [
+                    { id: "apx", name: "APX", count: count({ mainCategory: "mobile-radio", subCategory: "apx" }) },
+                    { id: "mototrbo", name: "MOTOTRBO", count: count({ mainCategory: "mobile-radio", subCategory: "mototrbo" }) },
+                    { id: "tetra", name: "TETRA", count: count({ mainCategory: "mobile-radio", subCategory: "tetra" }) },
+                ],
+            },
+            {
+                id: "body-camera",
+                name: "Body Camera",
+                count: count({ mainCategory: "body-camera" }),
+            },
+            {
+                id: "accessories",
+                name: "Accessories",
+                count: count({ mainCategory: "accessories" }),
+                subcategories: [
+                    {
+                        id: "mototrbo-two-way-radios",
+                        name: "MOTOTRBO Two-Way Radios",
+                        count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios" }),
+                        subSubCategories: [
+                            {
+                                id: "batteries",
+                                name: "Batteries",
+                                count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "batteries" }),
+                                subSubSubCategories: [
+                                    {
+                                        id: "impres-batteries",
+                                        name: "IMPRES™ Batteries",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "batteries", subSubSubCategory: "impres-batteries" }),
+                                    },
+                                    {
+                                        id: "original-two-way-radio-batteries",
+                                        name: "Original Two-way Radio Batteries",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "batteries", subSubSubCategory: "original-two-way-radio-batteries" }),
+                                    },
+                                ],
+                            },
+                            {
+                                id: "charger-accessories",
+                                name: "Charger Accessories",
+                                count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "charger-accessories" }),
+                                subSubSubCategories: [
+                                    {
+                                        id: "multi-unit-chargers",
+                                        name: "Multi-Unit Chargers",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "charger-accessories", subSubSubCategory: "multi-unit-chargers" }),
+                                    },
+                                    {
+                                        id: "single-unit-chargers",
+                                        name: "Single-Unit Chargers",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "charger-accessories", subSubSubCategory: "single-unit-chargers" }),
+                                    },
+                                ],
+                            },
+                            {
+                                id: "portable-radios-accessories",
+                                name: "Portable Radios Accessories",
+                                count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "portable-radios-accessories" }),
+                                subSubSubCategories: [
+                                    {
+                                        id: "800m-antenna",
+                                        name: "800M - Antenna",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "800m-antenna" }),
+                                    },
+                                    {
+                                        id: "adapters-for-antennas",
+                                        name: "Adapters for Antennas",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "adapters-for-antennas" }),
+                                    },
+                                    {
+                                        id: "uhf-antenna-portable-radios",
+                                        name: "UHF Antenna for Portable Radios",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "portable-radios-accessories", subSubSubCategory: "uhf-antenna-portable-radios" }),
+                                    },
+                                ],
+                            },
+                            {
+                                id: "audio-accessories",
+                                name: "Audio Accessories",
+                                count: count({ mainCategory: "accessories", subCategory: "mototrbo-two-way-radios", subSubCategory: "audio-accessories" }),
+                                subSubSubCategories: [
+                                    {
+                                        id: "ear-microphone-solutions",
+                                        name: "Ear Microphone Solutions",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "ear-microphone-solutions" }),
+                                    },
+                                    {
+                                        id: "earsets-and-earpieces",
+                                        name: "Earsets and Earpieces",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "earsets-and-earpieces" }),
+                                    },
+                                    {
+                                        id: "headsets",
+                                        name: "Headsets",
+                                        count: count({ mainCategory: "accessories", subSubCategory: "audio-accessories", subSubSubCategory: "headsets" }),
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: "consumer-two-way-radios",
+                        name: "Consumer Two-Way Radios",
+                        count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios" }),
+                        subSubCategories: [
+                            {
+                                id: "batteries-and-chargers",
+                                name: "Batteries and Chargers",
+                                count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "batteries-and-chargers" }),
+                            },
+                            {
+                                id: "headphones-earpieces-microphones",
+                                name: "Headphones, Earpieces and Microphones",
+                                count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "headphones-earpieces-microphones" }),
+                            },
+                            {
+                                id: "cases-and-carry-accessories",
+                                name: "Cases and Carry Accessories",
+                                count: count({ mainCategory: "accessories", subCategory: "consumer-two-way-radios", subSubCategory: "cases-and-carry-accessories" }),
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
+    }, [allProducts]);
 
     // ─── TOGGLE HELPERS ─────────────────────────────────────────────────────
-    const toggle = (list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>, id: string) => {
-        setList((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+
+    // Accordion for Level 1: only one open at a time
+    const toggleCategory = (categoryId: string) => {
+        setExpandedCategory((prev) => (prev === categoryId ? null : categoryId));
+    };
+
+    // Independent toggles for Level 2 & 3
+    const toggleSubCategory = (subId: string) => {
+        setExpandedSubCategories((prev) =>
+            prev.includes(subId) ? prev.filter((x) => x !== subId) : [...prev, subId]
+        );
+    };
+
+    const toggleSubSubCategory = (subSubId: string) => {
+        setExpandedSubSubCategories((prev) =>
+            prev.includes(subSubId) ? prev.filter((x) => x !== subSubId) : [...prev, subSubId]
+        );
     };
 
     // ─── CLICK HANDLERS ─────────────────────────────────────────────────────
-    const handleCategoryClick = (categoryId: string) => {
+
+    const handleCategoryClick = (categoryId: string, hasSubcategories: boolean) => {
         if (selectedCategory === categoryId) {
             router.push("/products");
             onCategoryChange(null);
             onSubCategoryChange(null);
             onSubSubCategoryChange?.(null);
             onSubSubSubCategoryChange?.(null);
+            setExpandedCategory(null);
         } else {
             router.push(`/category/${categoryId}`);
             onCategoryChange(categoryId);
             onSubCategoryChange(null);
             onSubSubCategoryChange?.(null);
             onSubSubSubCategoryChange?.(null);
-            if (!expandedCategories.includes(categoryId)) {
-                setExpandedCategories((prev) => [...prev, categoryId]);
-            }
+            setExpandedCategory(hasSubcategories ? categoryId : null);
         }
     };
 
-    const handleSubCategoryClick = (subCategoryId: string, categoryId: string) => {
+    const handleSubCategoryClick = (subCategoryId: string, categoryId: string, hasSubSubs: boolean) => {
         router.push(`/category/${categoryId}/${subCategoryId}`);
         if (selectedCategory !== categoryId) onCategoryChange(categoryId);
         onSubCategoryChange(subCategoryId);
         onSubSubCategoryChange?.(null);
         onSubSubSubCategoryChange?.(null);
-        if (!expandedSubCategories.includes(subCategoryId)) {
+        if (hasSubSubs && !expandedSubCategories.includes(subCategoryId)) {
             setExpandedSubCategories((prev) => [...prev, subCategoryId]);
         }
     };
 
-    const handleSubSubCategoryClick = (subSubId: string, subId: string, catId: string) => {
+    const handleSubSubCategoryClick = (subSubId: string, subId: string, catId: string, hasSubSubSubs: boolean) => {
         router.push(`/category/${catId}/${subId}/${subSubId}`);
         if (selectedCategory !== catId) onCategoryChange(catId);
         if (selectedSubCategory !== subId) onSubCategoryChange(subId);
         onSubSubCategoryChange?.(subSubId);
         onSubSubSubCategoryChange?.(null);
-        if (!expandedSubSubCategories.includes(subSubId)) {
+        if (hasSubSubSubs && !expandedSubSubCategories.includes(subSubId)) {
             setExpandedSubSubCategories((prev) => [...prev, subSubId]);
         }
     };
@@ -270,9 +291,12 @@ const ProductsSidebar = ({
         onSubCategoryChange(null);
         onSubSubCategoryChange?.(null);
         onSubSubSubCategoryChange?.(null);
+        setExpandedCategory(null);
+        setExpandedSubCategories([]);
+        setExpandedSubSubCategories([]);
     };
 
-    // ─── SHARED BUTTON STYLES ───────────────────────────────────────────────
+    // ─── SHARED UI HELPERS ───────────────────────────────────────────────────
     const chevron = (expanded: boolean) => (
         <svg
             className={`w-4 h-4 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
@@ -319,7 +343,7 @@ const ProductsSidebar = ({
             <div className="p-5">
                 <div className="space-y-1">
                     {categories.map((category) => {
-                        const isCatExpanded = expandedCategories.includes(category.id);
+                        const isCatExpanded = expandedCategory === category.id;
                         const isCatSelected = selectedCategory === category.id;
                         const hasSubs = !!category.subcategories?.length;
 
@@ -328,7 +352,7 @@ const ProductsSidebar = ({
                                 {/* Level 1: Main Category */}
                                 <div className="flex items-center gap-2">
                                     <button
-                                        onClick={() => handleCategoryClick(category.id)}
+                                        onClick={() => handleCategoryClick(category.id, hasSubs)}
                                         className={`flex-1 text-left px-3.5 py-2.5 rounded-lg transition-all duration-200 ${isCatSelected ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-700 hover:bg-gray-50 font-medium"}`}
                                     >
                                         <div className="flex items-center justify-between">
@@ -341,8 +365,9 @@ const ProductsSidebar = ({
                                     </button>
                                     {hasSubs && (
                                         <button
-                                            onClick={() => toggle(expandedCategories, setExpandedCategories, category.id)}
+                                            onClick={() => toggleCategory(category.id)}
                                             className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
+                                            aria-label={isCatExpanded ? "Collapse" : "Expand"}
                                         >
                                             {chevron(isCatExpanded)}
                                         </button>
@@ -362,7 +387,7 @@ const ProductsSidebar = ({
                                                 <div key={sub.id}>
                                                     <div className="flex items-center gap-1">
                                                         <button
-                                                            onClick={() => !isSubDisabled && handleSubCategoryClick(sub.id, category.id)}
+                                                            onClick={() => !isSubDisabled && handleSubCategoryClick(sub.id, category.id, hasSubSubs)}
                                                             disabled={isSubDisabled}
                                                             className={`flex-1 text-left px-4 py-2.5 rounded-lg text-sm transition-all duration-200 ${isSubDisabled ? "opacity-50 cursor-not-allowed text-gray-400" : isSubSelected ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
                                                         >
@@ -376,8 +401,9 @@ const ProductsSidebar = ({
                                                         </button>
                                                         {hasSubSubs && (
                                                             <button
-                                                                onClick={() => toggle(expandedSubCategories, setExpandedSubCategories, sub.id)}
+                                                                onClick={() => toggleSubCategory(sub.id)}
                                                                 className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
+                                                                aria-label={isSubExpanded ? "Collapse" : "Expand"}
                                                             >
                                                                 {chevron(isSubExpanded)}
                                                             </button>
@@ -397,7 +423,7 @@ const ProductsSidebar = ({
                                                                     <div key={subSub.id}>
                                                                         <div className="flex items-center gap-1">
                                                                             <button
-                                                                                onClick={() => !isSubSubDisabled && handleSubSubCategoryClick(subSub.id, sub.id, category.id)}
+                                                                                onClick={() => !isSubSubDisabled && handleSubSubCategoryClick(subSub.id, sub.id, category.id, hasSubSubSubs)}
                                                                                 disabled={isSubSubDisabled}
                                                                                 className={`flex-1 text-left px-4 py-2 rounded-lg text-xs transition-all duration-200 ${isSubSubDisabled ? "opacity-50 cursor-not-allowed text-gray-400" : isSubSubSelected ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"}`}
                                                                             >
@@ -411,8 +437,9 @@ const ProductsSidebar = ({
                                                                             </button>
                                                                             {hasSubSubSubs && (
                                                                                 <button
-                                                                                    onClick={() => toggle(expandedSubSubCategories, setExpandedSubSubCategories, subSub.id)}
+                                                                                    onClick={() => toggleSubSubCategory(subSub.id)}
                                                                                     className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
+                                                                                    aria-label={isSubSubExpanded ? "Collapse" : "Expand"}
                                                                                 >
                                                                                     {chevron(isSubSubExpanded)}
                                                                                 </button>
