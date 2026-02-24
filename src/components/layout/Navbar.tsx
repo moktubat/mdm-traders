@@ -37,6 +37,7 @@ const DesktopNavLink = ({
     const handleEnter = () => {
         if (!underlineRef.current || active) return;
 
+        gsap.killTweensOf(underlineRef.current); // kill any in-progress leave animation
         gsap.to(underlineRef.current, {
             scaleX: 1,
             duration: 0.35,
@@ -47,6 +48,7 @@ const DesktopNavLink = ({
     const handleLeave = () => {
         if (!underlineRef.current || active) return;
 
+        gsap.killTweensOf(underlineRef.current); // kill any in-progress enter animation
         gsap.to(underlineRef.current, {
             scaleX: 0,
             duration: 0.25,
@@ -95,6 +97,13 @@ const Navbar = () => {
     const cleanPath = pathname.replace(/\/$/, "") || "/";
 
     const isHomePage = cleanPath === "/";
+
+    // ─── FIX 1: Products-related paths that should all activate "Products" in nav
+    const isProductsActive =
+        cleanPath === "/products" ||
+        cleanPath.startsWith("/products/") ||
+        cleanPath.startsWith("/category") ||
+        cleanPath.startsWith("/products-compare");
 
     const navLinks = [
         { name: "Home", href: "/" },
@@ -152,8 +161,6 @@ const Navbar = () => {
         }
     }, [isOpen]);
 
-    /* Pages WITHOUT header */
-
     const pagesWithoutHeader = ["/products-compare"];
 
     const isProductDetailPage =
@@ -171,6 +178,17 @@ const Navbar = () => {
     const bgClass = isHomePage && !scrolled
         ? "bg-transparent py-4"
         : `backdrop-blur-xl bg-white/70 shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${useLightStyle ? "py-2" : "py-4"}`;
+
+    // ─── FIX 2: Precise isActive — uses exact match for root-level links to prevent
+    //            prefix collisions (e.g. /about matching /about AND /contact is impossible
+    //            but /about matching startsWith("/a") would be wrong)
+    const getIsActive = (href: string): boolean => {
+        if (href === "/") return cleanPath === "/";
+        if (href === "/products") return isProductsActive;
+        // Exact match first, then only startsWith with trailing slash to avoid
+        // /about accidentally matching /aboutus or similar
+        return cleanPath === href || cleanPath.startsWith(`${href}/`);
+    };
 
     return (
         <nav
@@ -194,11 +212,7 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navLinks.map((link) => {
-                            const isActive =
-                                link.href === "/"
-                                    ? cleanPath === "/"
-                                    : cleanPath === link.href ||
-                                    cleanPath.startsWith(`${link.href}/`);
+                            const isActive = getIsActive(link.href);
 
                             return (
                                 <DesktopNavLink
@@ -230,11 +244,7 @@ const Navbar = () => {
             >
                 <div className="px-4 pt-4 pb-6 space-y-2">
                     {navLinks.map((link, i) => {
-                        const isActive =
-                            link.href === "/"
-                                ? cleanPath === "/"
-                                : cleanPath === link.href ||
-                                cleanPath.startsWith(`${link.href}/`);
+                        const isActive = getIsActive(link.href);
 
                         return (
                             <Link
