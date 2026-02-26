@@ -198,17 +198,17 @@ const CompanyOverview = () => {
                         </div>
 
                         {/* CTA */}
-                        <Link
+                        {/* <Link
                             href="/products"
                             className="font-nunito text-sm md:text-base inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 md:px-7 py-2.5 md:py-3 rounded-full transition-colors"
                         >
                             See Our Latest Products
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
 
                 {/* Full-width extra text below */}
-                <div
+                {/* <div
                     ref={extraTextRef}
                     className="mt-20 pt-12 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6"
                 >
@@ -218,7 +218,7 @@ const CompanyOverview = () => {
                     <p className="font-nunito text-gray-600 text-base md:text-lg leading-relaxed">
                         Whatever your requirements are, we provide turnkey solutions tailored to your needs — working hard to understand your business and how our products and services can help you grow. Get in touch to learn more or arrange a visit.
                     </p>
-                </div>
+                </div> */}
 
             </div>
         </section>
